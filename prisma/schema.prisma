@@ -7,17 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Purchase {
-  id     Int    @id @default(autoincrement())
-  name   String
-  mobile String
-  userId Int
-  Users  Users  @relation(fields: [userId], references: [id], onUpdate: Restrict)
+enum PurchaseType {
+  IN
+  OUT
 }
 
-model Users {
+model purchase {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  type PurchaseType
+  order_number String @unique
+  name   String
+  mobile String
+  car_number String
+  weight_in Int
+  weight_out Int
+  car_weight Int
+  weight Int
+  amount Int
+  total Int
+  date_in DateTime
+  date_out DateTime
+  created_at DateTime @default(now())
+  users  users  @relation(fields: [userId], references: [id], onUpdate: Restrict)
+}
+
+model users {
   id       Int        @id @default(autoincrement())
   username String
   password String
-  Purchase Purchase[]
+  purchase purchase[]
+}
+
+model roles {
+  id       Int        @id @default(autoincrement())
+  name String
+  code String
+}
+
+model map_user_role {
+  id       Int        @id @default(autoincrement())
+  userId Int
+  roleId Int
 }
