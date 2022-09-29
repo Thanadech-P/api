@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { query } from 'express';
 import { UsersService } from './users.service';
 
 
@@ -7,27 +8,61 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   @Post()
-  create(@Body() createUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto) {
+    if(!createUserDto.username) return { success: false, res_desc: 'Please Input Username'}
+    else if(!createUserDto.password) return { success: false, res_desc: 'Please Input Password'}
+    else if(!createUserDto.role) return { success: false, res_desc: 'Please Input Role'}
+    const user = await this.usersService.create(createUserDto);
+    return {
+      success: true,
+      res_desc: 'Created User Successful',
+      user
+    };
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll(@Query() query: string) {
+    console.log(query)
+    const users = await this.usersService.findAll(query);
+    return {
+      success: true,
+      res_desc: '',
+      users
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const user = await this.usersService.findOne(+id);
+    return {
+      success: true,
+      res_desc: '',
+      user: {
+        id: user.id,
+        username: user.username,
+        password: user.password,
+        role: user.map_user_role.map((role) => {
+          return role.role_id
+        })
+      }
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto) {
+    await this.usersService.update(+id, updateUserDto);
+    return {
+      success: true,
+      res_desc: 'Updated Successful'
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Param('id') id: string) {
+    await this.usersService.remove(+id);
+    return {
+      success: true,
+      res_desc: 'Deleted Successful'
+    };
   }
 }

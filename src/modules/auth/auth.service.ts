@@ -9,8 +9,8 @@ export class AuthService {
     private usersService: UsersService,
     ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOneUsername(username);
+  async validateUser(username: string, pass: string) {
+    const user : any = this.usersService.findOneUsername(username);
     if (user && user.password === pass) {
       const { password, ...result } = user;
       // return result;
@@ -19,7 +19,7 @@ export class AuthService {
       };
     }
     return {
-      res_code: '9999',
+      success: false,
       res_desc: 'Username or Password Incorrect!!'
     };
   }
