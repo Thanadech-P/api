@@ -51,7 +51,7 @@ deploy_test:
     exit_codes:
       - 1
   variables:
-    PROJECT_IMAGE: backend-app-test
+    PROJECT_IMAGE: "${PROJECT_IMAGE}-test"
   script:
     - echo ${PROJECT_IMAGE}
     - docker stop $PROJECT_IMAGE  || true
