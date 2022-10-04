@@ -51,13 +51,11 @@ deploy_test:
   allow_failure:
     exit_codes:
       - 1
-  variables:
-    PROJECT_IMAGE: ${PROJECT_IMAGE}-test
   script:
     - echo ${PROJECT_IMAGE}
-    - docker stop $PROJECT_IMAGE  || true
-    - docker rm $PROJECT_IMAGE  || true
-    - docker run -d -p 13000:3000 --name $PROJECT_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - docker stop  ${PROJECT_IMAGE}-test  || true
+    - docker rm  ${PROJECT_IMAGE}-test  || true
+    - docker run -d -p 13000:3000 --name  ${PROJECT_IMAGE}-test $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
     # - docker run -d --name $PROJECT_IMAGE --expose 80 --net nginx-proxy -e VIRTUAL_HOST=play-dev.auto789.vip $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
 
   tags:
