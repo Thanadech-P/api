@@ -39,7 +39,6 @@ deploy:
     - docker stop $PROJECT_IMAGE  || true
     - docker rm $PROJECT_IMAGE  || true
     - docker run -d -p 3000:3000 --name $PROJECT_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
-    # - docker run -d --name $PROJECT_IMAGE --expose 9999 --net nginx-proxy -e VIRTUAL_HOST=api-dev.auto789.vip $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
   tags:
     - ${RUNNER_TAG}
   only:
@@ -56,7 +55,6 @@ deploy_test:
     - docker stop  ${PROJECT_IMAGE}-test  || true
     - docker rm  ${PROJECT_IMAGE}-test  || true
     - docker run -d -p 13000:3000 --name  ${PROJECT_IMAGE}-test $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
-    # - docker run -d --name $PROJECT_IMAGE --expose 80 --net nginx-proxy -e VIRTUAL_HOST=play-dev.auto789.vip $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
 
   tags:
     - ${RUNNER_TAG}
