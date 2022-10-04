@@ -45,6 +45,7 @@ deploy:
   only:
     - main
 
+
 deploy_test:
   stage: deploy
   allow_failure:
