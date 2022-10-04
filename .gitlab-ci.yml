@@ -1,0 +1,62 @@
+stages:
+  - build
+  - deploy
+
+before_script:
+  - docker login -u $GITLAB_USER -p $GITLAB_TOKEN $CI_REGISTRY
+variables:
+  CI_COMMIT_SHORT_SHA: $CI_COMMIT_SHORT_SHA
+  CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH
+  DATABASE_URL: $DATABASE_URL
+  PROJECT_IMAGE: TGT_SERVICE
+  RUNNER_TAG: devops-aws-nutto
+  GITLAB_USER: $GITLAB_USER
+  GITLAB_TOKEN: $GITLAB_TOKEN
+  GITPATH: https://${GITLAB_USER}:${GITLAB_TOKEN}@gitlab.com/ta_gut_tong/tgt_service.git
+  DOCKER_HOST: unix:///var/run/docker.sock
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+
+build:
+  stage: build
+  script:
+    - echo "DATABASE_URL=${DATABASE_URL}/?schema=public" >> .env
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+  tags:
+    - ${RUNNER_TAG}
+  only:
+    - main
+    - dev
+
+deploy:
+  stage: deploy
+  allow_failure: true
+  script:
+    - echo ${PROJECT_IMAGE}
+    # - export DOCKER_LIST=$(echo $(docker ps --filter "name=${PROJECT_IMAGE}"))
+    - docker stop $PROJECT_IMAGE  || true
+    - docker rm $PROJECT_IMAGE  || true
+    - docker run -d -p 3000:3000 --name $PROJECT_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+  tags:
+    - ${RUNNER_TAG}
+  only:
+    - main
+
+
+deploy_test:
+  stage: deploy
+  allow_failure:
+    exit_codes:
+      - 1
+  script:
+    - echo ${PROJECT_IMAGE}
+    - docker stop  ${PROJECT_IMAGE}-test  || true
+    - docker rm  ${PROJECT_IMAGE}-test  || true
+    - docker run -d -p 13000:3000 --name  ${PROJECT_IMAGE}-test $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+
+  tags:
+    - ${RUNNER_TAG}
+  only:
+    - dev
