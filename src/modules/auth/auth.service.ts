@@ -1,26 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import jwt = require('jsonwebtoken')
-// import jwtService from 'jsonwebtoken'
+import { JwtService } from '@nestjs/jwt';
+import { config } from 'src/configs';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    ) {}
+    private jwtService: JwtService
+  ) { }
 
   async validateUser(username: string, pass: string) {
-    const user : any = this.usersService.findOneUsername(username);
+    const user: any = await this.usersService.findOneUsername(username);
     if (user && user.password === pass) {
-      const { password, ...result } = user;
-      // return result;
+      const payload = { username: user.username, sub: user.user_id };
       return {
-        access_token: jwt.sign(result, process.env.TOKEN_KEY),
+        access_token: this.jwtService.sign(payload,{secret:config.jwt_secret_key}),
       };
     }
-    return {
-      success: false,
-      res_desc: 'Username or Password Incorrect!!'
-    };
+    throw new HttpException('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!!', HttpStatus.BAD_REQUEST);
   }
 }

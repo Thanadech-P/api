@@ -1,20 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
 
+  constructor(private readonly authService: AuthService) { }
+
+  @UseGuards(LocalAuthGuard)
   @Post()
-  create(@Body() createAuthDto) {
-    console.log('--- create validate user -----')
-    if (createAuthDto){
-      return this.authService.validateUser(createAuthDto.username, createAuthDto.password);
-    }else {
-      return {
-        res_code: '9999',
-        res_desc: 'Username or Password Not Found'
-      };
+  create(@Body() auth: any) {
+    /**
+     * '--- create validate user -----'
+     */
+    if (auth) {
+      try {
+        return this.authService.validateUser(auth.username, auth.password);
+      } catch (error) {
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 }

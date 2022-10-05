@@ -9,10 +9,13 @@ import { UsersModule } from './modules/users/users.module';
 import { UsersService } from './modules/users/users.service';
 import { AuthService } from './modules/auth/auth.service';
 import { PurchaseService } from './modules/purchase/purchase.service';
+import { JwtService } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './modules/auth/local.strategy';
 
 @Module({
-  imports: [UsersModule],
+  imports: [UsersModule, PassportModule],
   controllers: [AppController, UsersController, AuthController, PurchaseController],
-  providers: [AppService, PrismaService, UsersService, AuthService, PurchaseService],
+  providers: [AppService, PrismaService, UsersService, AuthService, PurchaseService, JwtService, LocalStrategy],
 })
 export class AppModule { }
