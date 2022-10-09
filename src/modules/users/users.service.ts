@@ -1,25 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
-export type User = any;
 
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) { }
-  // private readonly users = [
-  //   {
-  //     userId: 1,
-  //     username: 'test',
-  //     password: '1234',
-  //     role: ['PURCHASE']
-  //   },
-  //   {
-  //     userId: 2,
-  //     username: 'admin',
-  //     password: '1122',
-  //     role: ['ADMIN', 'ACCOUNGTING']
-  //   },
-  // ];
 
   async create(createUserDto) {
     const findUser = await this.prisma.users.findFirst({ where: { username: createUserDto.username } })
@@ -69,13 +54,11 @@ export class UsersService {
   }
 
   async findOneUsername(username: string) {
-    // return this.users.find(user => user.username === username);
     return this.prisma.users.findFirst({ where: { username } })
       .then((user) => {
         return user
       })
       .catch((err) => {
-        console.log('--- Not Found User ---')
         return null
       })
   }

@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { query } from 'express';
 import { UsersService } from './users.service';
 
@@ -21,8 +22,8 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async findAll(@Query() query: string) {
-    console.log(query)
     const users = await this.usersService.findAll(query);
     return {
       success: true,

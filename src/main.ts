@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-
+import * as cookieParser from 'cookie-parser';
+import { config as configs } from './configs/index'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors(configs.cors_option)
+  app.use(cookieParser());
   const config = new DocumentBuilder()
     .setTitle('Tgt Api')
     .setDescription('')

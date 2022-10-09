@@ -12,10 +12,11 @@ import { PurchaseService } from './modules/purchase/purchase.service';
 import { JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './modules/auth/local.strategy';
-
+import { AuthModule } from './modules/auth/auth.module';
+import { PurchaseModule } from './modules/purchase/purchase.module';
 @Module({
-  imports: [UsersModule, PassportModule],
-  controllers: [AppController, UsersController, AuthController, PurchaseController],
-  providers: [AppService, PrismaService, UsersService, AuthService, PurchaseService, JwtService, LocalStrategy],
+  imports: [AuthModule, UsersModule, PurchaseModule],
+  controllers: [AppController],
+  providers: [AppService,],
 })
 export class AppModule { }
