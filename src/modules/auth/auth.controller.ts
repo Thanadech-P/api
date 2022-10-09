@@ -1,9 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, Res, Req } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards, Res, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
 import { Response } from 'express'
-import { config } from 'src/configs';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
@@ -30,15 +28,10 @@ export class AuthController {
 
   }
 
-  @Get('expired')
-  async checkExpired(@Req() req: any) {
-    return 'acceps'
-  }
-
   @Get('refresh-token')
   @UseGuards(AuthGuard('refresh'))
   async regenerateTokens(
-    @Req() req,
+    @Req() req:any,
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = await this.authService.getJwtToken(req.user);
