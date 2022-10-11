@@ -10,9 +10,9 @@ export class PurchaseService {
   }
 
   findAll(query) {
-    const { limit, offset, date} = query
+    const { limit, offset, date } = query
     const q = {
-      where:{
+      where: {
         created_at: date
       },
       take: Number(limit) || 10,
@@ -23,6 +23,32 @@ export class PurchaseService {
 
   findOne(id: number) {
     return this.prisma.purchase.findUnique({ where: { id } })
+  }
+
+  async summaryOfDay(query) {
+    console.log(query)
+
+    const startOfDay = new Date(query.date);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+    
+    const endOfDay = new Date(query.date);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
+    const q : any = {
+      where: {
+        created_at: {
+          gt: startOfDay.toISOString(),
+          lt: endOfDay.toISOString()
+        }
+      },
+      select: {
+        total: true,
+        amount: true
+      }
+    }
+    const sum = await this.prisma.purchase.findMany(q)
+    console.log(sum)
+    return `Query Summary of ${query.date}`;
   }
 
   update(id: number, updatePurchaseDto) {
