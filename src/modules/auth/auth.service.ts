@@ -4,6 +4,8 @@ import * as randomToken from 'rand-token';
 import * as dayjs from 'dayjs';
 import { PrismaService } from 'prisma.service';
 import { Prisma } from '.prisma/client';
+import bcrypt = require('bcrypt');
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -95,9 +97,9 @@ export class AuthService {
     if (user == null) {
       return null;
     }
-
-    // const isValidPassword = await bcrypt.compare(password, user.password);
-    const isValidPassword = password === user.password
+    
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    // const isValidPassword = password === user.password
 
     if (!isValidPassword) {
       return null;

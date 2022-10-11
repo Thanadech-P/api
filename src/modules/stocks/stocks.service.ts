@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
 
 @Injectable()
-export class PurchaseService {
+export class StocksService {
   constructor(private prisma: PrismaService) { }
 
-  create(createPurchaseDto) {
-    return this.prisma.purchase.create({ data: createPurchaseDto })
+  create(createStockDto) {
+    return this.prisma.stocks.create({ data: createStockDto })
   }
 
   findAll(query) {
@@ -18,18 +18,18 @@ export class PurchaseService {
       take: Number(limit) || 10,
       skip: Number(offset) || 0
     }
-    return this.prisma.purchase.findMany(q)
+    return this.prisma.stocks.findMany(q)
   }
 
   findOne(id: number) {
-    return this.prisma.purchase.findUnique({ where: { id } })
+    return this.prisma.stocks.findUnique({ where: { id }})
   }
 
-  update(id: number, updatePurchaseDto) {
-    return this.prisma.purchase.update({ where: { id }, data: updatePurchaseDto })
+  update(id: number, updateStockDto) {
+    return this.prisma.stocks.update({ where: { id }, data: updateStockDto })
   }
 
   remove(id: number) {
-    return this.prisma.purchase.delete({ where: { id } })
+    return this.prisma.stocks.delete({ where: { id }})
   }
 }
