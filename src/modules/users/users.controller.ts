@@ -11,6 +11,7 @@ export class UsersController {
     private readonly jwtService: JwtService) { }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() createUserDto) {
     if (!createUserDto.username) return { success: false, res_desc: 'Please Input Username' }
     else if (!createUserDto.password) return { success: false, res_desc: 'Please Input Password' }
@@ -35,6 +36,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(+id);
     return {
@@ -49,6 +51,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(@Param('id') id: string, @Body() updateUserDto) {
     await this.usersService.update(+id, updateUserDto);
     return {
@@ -58,6 +61,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id') id: string) {
     await this.usersService.remove(+id);
     return {
