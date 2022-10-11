@@ -38,9 +38,10 @@ model users {
 }
 
 model roles {
-  id   Int    @id @default(autoincrement())
-  name String
-  code String
+  id            Int             @id @default(autoincrement())
+  name          String
+  code          String
+  map_user_role map_user_role[]
 }
 
 model map_user_role {
@@ -48,6 +49,7 @@ model map_user_role {
   user_id Int
   role_id Int
   users   users @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  roles   roles @relation(fields: [role_id], references: [id], onUpdate: Restrict)
 }
 
 enum PurchaseType {

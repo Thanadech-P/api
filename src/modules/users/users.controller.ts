@@ -1,18 +1,20 @@
+import { Req } from '@nestjs/common';
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
-import { query } from 'express';
 import { UsersService } from './users.service';
 
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService,
+    private readonly jwtService: JwtService) { }
 
   @Post()
   async create(@Body() createUserDto) {
-    if(!createUserDto.username) return { success: false, res_desc: 'Please Input Username'}
-    else if(!createUserDto.password) return { success: false, res_desc: 'Please Input Password'}
-    else if(!createUserDto.role) return { success: false, res_desc: 'Please Input Role'}
+    if (!createUserDto.username) return { success: false, res_desc: 'Please Input Username' }
+    else if (!createUserDto.password) return { success: false, res_desc: 'Please Input Password' }
+    else if (!createUserDto.role) return { success: false, res_desc: 'Please Input Role' }
     const user = await this.usersService.create(createUserDto);
     return {
       success: true,
@@ -42,9 +44,6 @@ export class UsersController {
         id: user.id,
         username: user.username,
         password: user.password,
-        role: user.map_user_role.map((role) => {
-          return role.role_id
-        })
       }
     };
   }
@@ -65,5 +64,19 @@ export class UsersController {
       success: true,
       res_desc: 'Deleted Successful'
     };
+  }
+
+
+  @Get('/get/me')
+  @UseGuards(AuthGuard('jwt'))
+  async getUserProfile(@Req() req: any) {
+    const data: any = this.jwtService.decode(req.cookies['auth-cookie'].token)
+    const result = await this.usersService.findOne(+data?.id);
+    const user = {
+      username: result.username,
+      role: result.map_user_role.map((item) => item.roles.code),
+      id: result.id,
+    }
+    return user;
   }
 }

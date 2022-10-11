@@ -43,7 +43,7 @@ export class AuthController {
       refreshToken,
     };
 
-    res.cookie('auth-cookie', secretData, { httpOnly: true });
+    res.cookie('auth-cookie', secretData, { httpOnly: false });
     return { msg: 'success' };
   }
 }

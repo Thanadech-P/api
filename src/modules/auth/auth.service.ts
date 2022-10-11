@@ -34,7 +34,6 @@ export class AuthService {
     const payload = {
       ...user,
     };
-    console.log(`payload`, payload)
     const result = await this.jwtService.signAsync(payload);
     return result;
   }
@@ -59,7 +58,6 @@ export class AuthService {
     refreshToken: string,
   ): Promise<any> {
     const currentDate = dayjs().add(1, 'day').format();
-    console.log(`id`, id)
     let user = await this.prisma.users.findFirst({
       where: {
         id: id,

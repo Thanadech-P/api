@@ -46,7 +46,7 @@ export class UsersService {
       include: {
         map_user_role: {
           select: {
-            role_id: true
+            roles: true
           }
         }
       }
