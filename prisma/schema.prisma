@@ -11,7 +11,6 @@ model purchase {
   id           Int          @id @default(autoincrement())
   user_id      Int
   type         PurchaseType
-  order_number String       @unique
   name         String
   mobile       String
   car_number   String
@@ -33,6 +32,13 @@ model stocks {
   amount       Int
   price        Int
   unit       String
+  created_at   DateTime     @default(now())
+}
+
+model branchs {
+  id           Int          @id @default(autoincrement())
+  name         String
+  no          Int
   created_at   DateTime     @default(now())
 }
 

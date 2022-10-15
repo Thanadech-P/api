@@ -33,6 +33,16 @@ export class PurchaseController {
       res_desc: '',
       purchase
     };
+
+  }
+  @Get('summary/day')
+  async summaryOfDay(@Query() query: string) {
+    const summary = await this.purchaseService.summaryOfDay(query);
+    return {
+      success: true,
+      res_desc: '',
+      summary
+    };
   }
 
   // @Patch(':id')
