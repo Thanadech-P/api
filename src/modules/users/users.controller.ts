@@ -11,7 +11,7 @@ export class UsersController {
     private readonly jwtService: JwtService) { }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   async create(@Body() createUserDto) {
     if (!createUserDto.username) return { success: false, res_desc: 'Please Input Username' }
     else if (!createUserDto.password) return { success: false, res_desc: 'Please Input Password' }
@@ -75,12 +75,12 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   async getUserProfile(@Req() req: any) {
     const data: any = this.jwtService.decode(req.cookies['auth-cookie'].token)
-    const result = await this.usersService.findOne(+data?.id);
+    const result = await this.usersService.findOne(data?.id);
     const user = {
       username: result.username,
       role: result.map_user_role.map((item) => item.roles.code),
       id: result.id,
     }
-    return user;
+    return { user };
   }
 }

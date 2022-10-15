@@ -8,32 +8,41 @@ datasource db {
 }
 
 model purchase {
-  id           Int          @id @default(autoincrement())
-  user_id      Int
-  type         PurchaseType
-  order_number String       @unique
-  name         String
-  mobile       String
-  car_number   String
-  weight_in    Int
-  weight_out   Int
-  car_weight   Int
-  weight       Int
-  amount       Int
-  total        Int
-  date_in      DateTime?
-  date_out     DateTime?
-  created_at   DateTime     @default(now())
-  users        users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  id                    Int          @id @default(autoincrement())
+  user_id               Int
+  type                  PurchaseType
+  partner_type          String //คู่ค้า
+  date_in               DateTime? //เวลาเข้า
+  date_out              DateTime? //เวลาออก
+  // car //
+  car_number            String //ทะเบียนรถ
+  car_weight_in         Float //น้ำหนักรถเข้า
+  car_weight_out        Float //น้ำหนักรถออก
+  car_weight            Float //น้ำหนักรถบรรทุก
+  // product //
+  product_name          String // สินค้า
+  product_amount        Float //ปริมาณหรือจำนวนสินค้า
+  product_unit          String //หน่วยสินค้า
+  product_net_amount    Float // ยอดเงินสุทธิ
+  weigh_fee             Float // ค่าชั่ง
+  put_fee               Float // ค่าลง
+  // subtract // 
+  subtract_bag          Float //หักกระสอบ
+  subtract_adulteration Float // หักสิ่งเจือปน
+  subtract_moisture     Float // หักความชื้น
+  net_weight            Float // หักน้ำหนัก
+  note                  String? //หมายเหตุ
+  created_at            DateTime     @default(now())
+  users                 users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }
 
 model stocks {
-  id           Int          @id @default(autoincrement())
-  name         String
-  amount       Int
-  price        Int
+  id         Int      @id @default(autoincrement())
+  name       String
+  amount     Int
+  price      Int
   unit       String
-  created_at   DateTime     @default(now())
+  created_at DateTime @default(now())
 }
 
 model users {
@@ -44,7 +53,7 @@ model users {
   map_user_role     map_user_role[]
   refresh_token     String?
   refresh_token_exp DateTime?       @db.Date
-  created_at   DateTime     @default(now())
+  created_at        DateTime        @default(now())
 }
 
 model roles {
@@ -55,12 +64,12 @@ model roles {
 }
 
 model map_user_role {
-  id      Int   @id @default(autoincrement())
-  user_id Int
-  role_id Int
-  created_at   DateTime     @default(now())
-  users   users @relation(fields: [user_id], references: [id], onUpdate: Restrict)
-  roles   roles @relation(fields: [role_id], references: [id], onUpdate: Restrict)
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  role_id    Int
+  created_at DateTime @default(now())
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  roles      roles    @relation(fields: [role_id], references: [id], onUpdate: Restrict)
 }
 
 enum PurchaseType {
