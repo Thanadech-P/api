@@ -41,7 +41,10 @@ export class PurchaseController {
     return {
       success: true,
       res_desc: '',
-      summary
+      summary: {
+        total: summary._sum.total || 0,
+        amount: summary._sum.amount || 0
+      }
     };
   }
 
