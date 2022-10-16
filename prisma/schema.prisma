@@ -8,38 +8,41 @@ datasource db {
 }
 
 model purchase {
-  id           Int          @id @default(autoincrement())
-  user_id      Int
-  type         PurchaseType
-  name         String
-  mobile       String
-  car_number   String
-  weight_in    Int
-  weight_out   Int
-  car_weight   Int
-  weight       Int
-  amount       Int
-  total        Int
-  date_in      DateTime?
-  date_out     DateTime?
-  created_at   DateTime     @default(now())
-  users        users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  id         Int          @id @default(autoincrement())
+  user_id    Int
+  branch_id  Int
+  type       PurchaseType
+  name       String
+  mobile     String
+  car_number String
+  weight_in  Int
+  weight_out Int
+  car_weight Int
+  weight     Int
+  amount     Int
+  total      Int
+  date_in    DateTime?
+  date_out   DateTime?
+  created_at DateTime     @default(now())
+  users      users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  branchs    branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
 }
 
 model stocks {
-  id           Int          @id @default(autoincrement())
-  name         String
-  amount       Int
-  price        Int
+  id         Int      @id @default(autoincrement())
+  name       String
+  amount     Int
+  price      Int
   unit       String
-  created_at   DateTime     @default(now())
+  created_at DateTime @default(now())
 }
 
 model branchs {
-  id           Int          @id @default(autoincrement())
-  name         String
-  no          Int
-  created_at   DateTime     @default(now())
+  id         Int        @id @default(autoincrement())
+  name       String
+  no         Int
+  created_at DateTime   @default(now())
+  purchase   purchase[]
 }
 
 model users {
@@ -50,7 +53,7 @@ model users {
   map_user_role     map_user_role[]
   refresh_token     String?
   refresh_token_exp DateTime?       @db.Date
-  created_at   DateTime     @default(now())
+  created_at        DateTime        @default(now())
 }
 
 model roles {
@@ -61,12 +64,12 @@ model roles {
 }
 
 model map_user_role {
-  id      Int   @id @default(autoincrement())
-  user_id Int
-  role_id Int
-  created_at   DateTime     @default(now())
-  users   users @relation(fields: [user_id], references: [id], onUpdate: Restrict)
-  roles   roles @relation(fields: [role_id], references: [id], onUpdate: Restrict)
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  role_id    Int
+  created_at DateTime @default(now())
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  roles      roles    @relation(fields: [role_id], references: [id], onUpdate: Restrict)
 }
 
 enum PurchaseType {
