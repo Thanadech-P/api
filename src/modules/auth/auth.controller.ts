@@ -23,7 +23,7 @@ export class AuthController {
       token,
       refreshToken,
     };
-    response.cookie('auth-cookie', authData, { httpOnly: true });
+    response.cookie('auth-cookie', authData, { httpOnly: false });
     return { msg: 'success' };
 
   }

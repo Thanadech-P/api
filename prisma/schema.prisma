@@ -8,24 +8,32 @@ datasource db {
 }
 
 model purchase {
-  id         Int          @id @default(autoincrement())
-  user_id    Int
-  branch_id  Int
-  type       PurchaseType
-  name       String
-  mobile     String
-  car_number String
-  weight_in  Int
-  weight_out Int
-  car_weight Int
-  weight     Int
-  amount     Int
-  total      Int
-  date_in    DateTime?
-  date_out   DateTime?
-  created_at DateTime     @default(now())
-  users      users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
-  branchs    branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
+  id                    Int          @id @default(autoincrement())
+  user_id               Int
+  type                  PurchaseType
+  partner_type          String //คู่ค้า
+  date_in               DateTime? //เวลาเข้า
+  date_out              DateTime? //เวลาออก
+  // car //
+  car_number            String //ทะเบียนรถ
+  car_weight_in         Float //น้ำหนักรถเข้า
+  car_weight_out        Float //น้ำหนักรถออก
+  car_weight            Float //น้ำหนักรถบรรทุก
+  // product //
+  product_name          String // สินค้า
+  product_amount        Float //ปริมาณหรือจำนวนสินค้า
+  product_unit          String //หน่วยสินค้า
+  product_net_amount    Float // ยอดเงินสุทธิ
+  weigh_fee             Float // ค่าชั่ง
+  put_fee               Float // ค่าลง
+  // subtract // 
+  subtract_bag          Float //หักกระสอบ
+  subtract_adulteration Float // หักสิ่งเจือปน
+  subtract_moisture     Float // หักความชื้น
+  net_weight            Float // หักน้ำหนัก
+  note                  String? //หมายเหตุ
+  created_at            DateTime     @default(now())
+  users                 users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }
 
 model stocks {
