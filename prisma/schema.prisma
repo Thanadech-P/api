@@ -10,6 +10,7 @@ datasource db {
 model purchase {
   id                    Int          @id @default(autoincrement())
   user_id               Int
+  branch_id             Int
   type                  PurchaseType
   partner_type          String //คู่ค้า
   date_in               DateTime? //เวลาเข้า
@@ -34,6 +35,7 @@ model purchase {
   note                  String? //หมายเหตุ
   created_at            DateTime     @default(now())
   users                 users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  branchs               branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
 }
 
 model stocks {
