@@ -21,7 +21,7 @@ build:
   stage: build
   script:
     - echo "DATABASE_URL=${DATABASE_URL}/?schema=public" >> .env
-    - echo "TOKEN_KEY=${TOKEN_KEY} >> .env
+    - echo "TOKEN_KEY=${TOKEN_KEY}" >> .env
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
