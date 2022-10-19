@@ -55,6 +55,12 @@ model branchs {
   purchase   purchase[]
 }
 
+model partners {
+  id         Int        @id @default(autoincrement())
+  name       String
+  created_at DateTime   @default(now())
+}
+
 model users {
   id                Int             @id @default(autoincrement())
   username          String
