@@ -8,7 +8,7 @@ datasource db {
 }
 
 model purchase {
- id                    Int          @id @default(autoincrement())
+  id                    Int          @id @default(autoincrement())
   user_id               Int
   branch_id             Int
   type                  PurchaseType
@@ -84,7 +84,7 @@ model map_user_role {
 }
 
 model partner {
-  id         Int       @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   created_at DateTime @default(now())
 }
