@@ -8,7 +8,7 @@ datasource db {
 }
 
 model purchase {
-  id                    Int          @id @default(autoincrement())
+ id                    Int          @id @default(autoincrement())
   user_id               Int
   branch_id             Int
   type                  PurchaseType
@@ -45,6 +45,7 @@ model stocks {
   price      Int
   unit       String
   created_at DateTime @default(now())
+  code       String?  @db.VarChar
 }
 
 model branchs {
@@ -55,21 +56,15 @@ model branchs {
   purchase   purchase[]
 }
 
-model partners {
-  id         Int        @id @default(autoincrement())
-  name       String
-  created_at DateTime   @default(now())
-}
-
 model users {
   id                Int             @id @default(autoincrement())
   username          String
   password          String
-  purchase          purchase[]
-  map_user_role     map_user_role[]
   refresh_token     String?
   refresh_token_exp DateTime?       @db.Date
   created_at        DateTime        @default(now())
+  map_user_role     map_user_role[]
+  purchase          purchase[]
 }
 
 model roles {
@@ -84,8 +79,14 @@ model map_user_role {
   user_id    Int
   role_id    Int
   created_at DateTime @default(now())
-  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
   roles      roles    @relation(fields: [role_id], references: [id], onUpdate: Restrict)
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+}
+
+model partner {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
 }
 
 enum PurchaseType {
