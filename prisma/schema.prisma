@@ -12,9 +12,9 @@ model purchase {
   user_id               Int
   branch_id             Int
   type                  PurchaseType
-  partner_type          String //คู่ค้า
-  date_in               DateTime? //เวลาเข้า
-  date_out              DateTime? //เวลาออก
+  partner               String //คู่ค้า
+  time_in               DateTime? //เวลาเข้า
+  time_out              DateTime? //เวลาออก
   // car //
   car_number            String //ทะเบียนรถ
   car_weight_in         Float //น้ำหนักรถเข้า
@@ -28,10 +28,7 @@ model purchase {
   weigh_fee             Float // ค่าชั่ง
   put_fee               Float // ค่าลง
   // subtract // 
-  subtract_bag          Float //หักกระสอบ
-  subtract_adulteration Float // หักสิ่งเจือปน
-  subtract_moisture     Float // หักความชื้น
-  net_weight            Float // หักน้ำหนัก
+  subtract_weight            Float // หักน้ำหนัก
   note                  String? //หมายเหตุ
   created_at            DateTime     @default(now())
   users                 users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)

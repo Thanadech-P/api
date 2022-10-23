@@ -38,14 +38,14 @@ export class PurchaseController {
   @Get('summary/day')
   async summaryOfDay(@Query() query: string) {
     const summary = await this.purchaseService.summaryOfDay(query);
-    return {
-      success: true,
-      res_desc: '',
-      summary: {
-        total: summary._sum.total || 0,
-        amount: summary._sum.amount || 0
-      }
-    };
+    // return {
+    //   success: true,
+    //   res_desc: '',
+    //   summary: {
+    //     total: summary._sum.total || 0,
+    //     amount: summary._sum.amount || 0
+    //   }
+    // };
   }
 
   // @Patch(':id')
