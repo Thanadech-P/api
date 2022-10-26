@@ -108,6 +108,15 @@ model partner {
   created_at DateTime @default(now())
 }
 
+model map_user_branch {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  branch_id  Int
+  created_at DateTime @default(now())
+  branchs    branchs  @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+}
+
 enum PurchaseType {
   IN
   OUT
