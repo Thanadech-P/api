@@ -8,41 +8,42 @@ datasource db {
 }
 
 model purchase {
-  id                    Int          @id @default(autoincrement())
-  user_id               Int
-  type                  PurchaseType
-  date_in               DateTime?
-  date_out              DateTime?
-  car_number            String
-  car_weight            Float
-  created_at            DateTime     @default(now())
-  amount                Float
-  branch_id             Int
-  mobile                String
-  name                  String
-  total                 Float
-  weight                Float
-  weight_in             Float
-  weight_out            Float
-  car_weight_in         Int?
-  car_weight_out        Int?
-  partner_type          String?
-  product_name          String?
-  note                  String?
-  product_amount        Int?
-  product_unit          String?
-  product_net_amount    Int?
-  weigh_fee             Int?
-  put_fee               Int?
-  subtract_bag          Int?
-  subtract_adulteration Int?
-  subtract_moisture     Int?
-  net_weight            Int?
-  delivery_man          String?
-  recipient             String?
-  weigher               String?
-  branchs               branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
-  users                 users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  id                     Int          @id @default(autoincrement())
+  user_id                Int
+  type                   PurchaseType
+  date_in                DateTime?
+  date_out               DateTime?
+  car_number             String?
+  car_weight             Float?
+  created_at             DateTime     @default(now())
+  amount                 Float?
+  branch_id              Int
+  mobile                 String?
+  name                   String?
+  total                  Float?
+  weight                 Float?
+  weight_in              Float?
+  weight_out             Float?
+  car_weight_in          Float?
+  car_weight_out         Float?
+  partner_type           String?
+  product_name           String?
+  note                   String?
+  product_amount         Int?
+  product_price_per_unit String?
+  product_net_amount     Int?
+  weight_fee             Int?
+  put_fee                Int?
+  subtract_bag           Int?
+  subtract_adulteration  Int?
+  subtract_moisture      Int?
+  net_weight             Int?
+  delivery_man           String?
+  recipient              String?
+  weigher                String?
+  subtract_weight        Float?
+  branchs                branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
+  users                  users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }
 
 model stocks {
@@ -89,6 +90,15 @@ model map_user_role {
   role_id    Int
   created_at DateTime @default(now())
   roles      roles    @relation(fields: [role_id], references: [id], onUpdate: Restrict)
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+}
+
+model map_user_branch {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  branch_id  Int
+  created_at DateTime @default(now())
+  branchs    branchs  @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
   users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }
 

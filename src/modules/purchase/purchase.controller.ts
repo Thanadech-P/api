@@ -3,16 +3,54 @@ import { PurchaseService } from './purchase.service';
 
 @Controller('purchase')
 export class PurchaseController {
-  constructor(private readonly purchaseService: PurchaseService) {}
+  constructor(private readonly purchaseService: PurchaseService) { }
 
   @Post()
   async create(@Body() createPurchaseDto) {
-    const purchase = await this.purchaseService.create(createPurchaseDto);
-    return {
-      success: true,
-      res_desc: 'Purchase Successful',
-      purchase
-    };
+    try {
+      const newPurchase = {
+        user_id: createPurchaseDto.user_id,
+        branch_id: createPurchaseDto.branch_id,
+        type: createPurchaseDto.type,
+        partner_type: createPurchaseDto.partner,
+        //product
+        product_name: createPurchaseDto.product_name,
+        product_amount: parseFloat(createPurchaseDto.product_amount),
+        product_price_per_unit: createPurchaseDto.product_price_per_unit,
+        product_net_amount: parseFloat(createPurchaseDto.product_net_amount),
+        //car
+        car_number: createPurchaseDto.car_number,
+        car_weight_in: parseFloat(createPurchaseDto.car_weight_in),
+        car_weight_out: parseFloat(createPurchaseDto.car_weight_out),
+        car_weight: parseFloat(createPurchaseDto.car_weight),
+        //weight
+        weight: parseFloat(createPurchaseDto.weight_amount),
+        subtract_weight: parseFloat(createPurchaseDto.subtract_weight),
+        //optional
+        weigher: createPurchaseDto.weigher,
+        recipient: createPurchaseDto.recipient,
+        delivery_man: createPurchaseDto.deliver_man,
+        note: createPurchaseDto.note
+      }
+      const product = {
+        id: createPurchaseDto.product_id,
+        product_name: createPurchaseDto.product_name,
+        product_amount: parseFloat(createPurchaseDto.product_amount),
+        product_price_per_unit: createPurchaseDto.product_price_per_unit,
+        product_net_amount: parseFloat(createPurchaseDto.product_net_amount)
+      }
+      const purchase = await this.purchaseService.create(newPurchase, product);
+      return {
+        success: true,
+        res_desc: 'Purchase Successful',
+        purchase
+      };
+    } catch (err) {
+      return {
+        success: false,
+        res_desc: err.message
+      };
+    }
   }
 
   @Get()

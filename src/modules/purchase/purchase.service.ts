@@ -5,8 +5,25 @@ import { PrismaService } from 'prisma.service';
 export class PurchaseService {
   constructor(private prisma: PrismaService) { }
 
-  create(createPurchaseDto) {
-    return this.prisma.purchase.create({ data: createPurchaseDto })
+  async create(createPurchaseDto, product) {
+    try {
+      const type = createPurchaseDto.type
+      const p = await this.prisma.stocks.findFirst({ where: { id: product.id } })
+      const amountStock = p.amount
+      const amountPuchase = product.product_amount
+      if (type === 'OUT' && amountStock < amountPuchase) throw new Error('คลังสินค้าไม่เพียงพอ')
+      await this.prisma.stocks.update({
+        where: {
+          id: product.id
+        },
+        data: {
+          amount: createPurchaseDto.type === 'IN' ? (amountStock + amountPuchase) : (amountStock - amountPuchase)
+        }
+      })
+      return await this.prisma.purchase.create({ data: createPurchaseDto })
+    } catch (err) {
+      throw err
+    }
   }
 
   findAll(query) {
