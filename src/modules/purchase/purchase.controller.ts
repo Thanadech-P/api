@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req } from '@nestjs/common';
+import { Controller,UseGuards, Get, Post, Body, Patch, Param, Delete, Query, Req } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { JwtService } from '@nestjs/jwt';
-
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('purchase')
 export class PurchaseController {
@@ -9,6 +9,7 @@ export class PurchaseController {
     private readonly jwtService: JwtService) { }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Req() req: any,
     @Body() createPurchaseDto) {
     try {
@@ -16,6 +17,8 @@ export class PurchaseController {
       const newPurchase = {
         user_id: data.id,
         branch_id: data.branch_id,
+        date_in: createPurchaseDto.time_in,
+        date_out: createPurchaseDto.time_out,
         type: createPurchaseDto.type,
         partner_type: createPurchaseDto.partner,
         //product

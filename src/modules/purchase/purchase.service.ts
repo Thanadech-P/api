@@ -22,6 +22,7 @@ export class PurchaseService {
       })
       return await this.prisma.purchase.create({ data: createPurchaseDto })
     } catch (err) {
+      console.log(err)
       throw err
     }
   }
