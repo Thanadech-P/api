@@ -1,16 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
+import { JwtService } from '@nestjs/jwt';
+
 
 @Controller('purchase')
 export class PurchaseController {
-  constructor(private readonly purchaseService: PurchaseService) { }
+  constructor(private readonly purchaseService: PurchaseService,
+    private readonly jwtService: JwtService) { }
 
   @Post()
-  async create(@Body() createPurchaseDto) {
+  async create(@Req() req: any,
+    @Body() createPurchaseDto) {
     try {
+      const data: any = this.jwtService.decode(req.cookies['auth-cookie'].token)
       const newPurchase = {
-        user_id: createPurchaseDto.user_id,
-        branch_id: createPurchaseDto.branch_id,
+        user_id: data.id,
+        branch_id: data.branch_id,
         type: createPurchaseDto.type,
         partner_type: createPurchaseDto.partner,
         //product

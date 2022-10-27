@@ -89,6 +89,13 @@ export class AuthService {
     let user = await this.prisma.users.findFirst({
       where: {
         username: username
+      },
+      include: {
+        map_user_branch: {
+          select: {
+            branchs: true
+          }
+        }
       }
     });
 
@@ -104,6 +111,7 @@ export class AuthService {
     }
     const userData = {
       id: user.id,
+      branch_id: user.map_user_branch[0].branchs.id || null,
       username: user.username,
     }
     return userData;
