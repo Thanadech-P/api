@@ -22,7 +22,6 @@ export class PurchaseService {
       })
       return await this.prisma.purchase.create({ data: createPurchaseDto })
     } catch (err) {
-      console.log(err)
       throw err
     }
   }
@@ -30,13 +29,15 @@ export class PurchaseService {
   findAll(query) {
     const { limit, offset, date } = query
     const q = {
-      where: {
-        created_at: date
-      },
       take: Number(limit) || 10,
       skip: Number(offset) || 0
     }
-    return this.prisma.purchase.findMany(q)
+    return this.prisma.purchase.findMany({
+      orderBy: {
+        created_at: 'desc'
+      },
+      ...q
+    })
   }
 
   findOne(id: number) {
@@ -44,8 +45,6 @@ export class PurchaseService {
   }
 
   async summaryOfDay(query) {
-    console.log(query)
-
     const startOfDay = new Date(query.date);
     startOfDay.setUTCHours(0, 0, 0, 0);
 

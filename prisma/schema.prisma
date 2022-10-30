@@ -42,6 +42,7 @@ model purchase {
   recipient              String?
   weigher                String?
   subtract_weight        Float?
+  updated_at             DateTime?    @default(now())
   branchs                branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
   users                  users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }

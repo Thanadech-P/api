@@ -67,15 +67,23 @@ export class AuthService {
         refresh_token_exp: {
           gte: currentDate
         }
+      },
+      include: {
+        map_user_branch: {
+          select: {
+            branchs: true
+          }
+        }
       }
     });
-
     if (!user) {
       return null;
     }
     const currentUser = {
       id: user.id,
       username: user.username,
+      branch_id: user?.map_user_branch[0]?.branchs?.id || null,
+
     }
 
 
@@ -102,7 +110,7 @@ export class AuthService {
     if (user == null) {
       return null;
     }
-    
+
     const isValidPassword = await bcrypt.compare(password, user.password);
     // const isValidPassword = password === user.password
 
@@ -111,8 +119,8 @@ export class AuthService {
     }
     const userData = {
       id: user.id,
-      branch_id: user.map_user_branch[0].branchs.id || null,
-      username: user.username,
+      branch_id: user?.map_user_branch[0]?.branchs?.id || null,
+      username: user?.username,
     }
     return userData;
   }
