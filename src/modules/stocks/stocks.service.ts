@@ -26,6 +26,7 @@ export class StocksService {
   async findOne(id: number) {
     const stock = await this.prisma.stocks.findUnique({ where: { id }})
     if(!stock) throw new BadRequestException('ไม่พบข้อมูลสินค้าดังกล่าว')
+    return stock
   }
 
   update(id: number, updateStockDto) {

@@ -25,7 +25,16 @@ export class AuthController {
     };
     response.cookie('auth-cookie', authData, { httpOnly: false });
     return { msg: 'success' };
+  }
 
+  @UseGuards(AuthGuard('local'))
+  @Post('logout')
+  async logut(
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.clearCookie('auth-cookie')
+ 
+    return { msg: 'User Logout' };
   }
 
   @Get('refresh-token')

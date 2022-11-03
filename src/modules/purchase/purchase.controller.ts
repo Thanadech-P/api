@@ -48,7 +48,7 @@ export class PurchaseController {
     }
     const purchase = await this.purchaseService.create(newPurchase, product);
     return {
-      res_desc: 'Purchase Successful',
+      msg: 'Purchase Successful',
       purchase
     };
   }
@@ -57,7 +57,7 @@ export class PurchaseController {
   async findAll(@Query() query: string) {
     const purchases = await this.purchaseService.findAll(query);
     return {
-      res_desc: 'Get Purchases',
+      msg: 'Get Purchases',
       purchases
     };
   }
@@ -66,7 +66,7 @@ export class PurchaseController {
   async findOne(@Param('id') id: string) {
     const purchase = await this.purchaseService.findOne(+id);
     return {
-      res_desc: 'Get Purcase ID',
+      msg: 'Get Purcase ID',
       purchase
     };
 
@@ -76,7 +76,7 @@ export class PurchaseController {
     const summary = await this.purchaseService.summaryOfDay(query);
     // return {
     //   success: true,
-    //   res_desc: '',
+    //   msg: '',
     //   summary: {
     //     total: summary._sum.total || 0,
     //     amount: summary._sum.amount || 0

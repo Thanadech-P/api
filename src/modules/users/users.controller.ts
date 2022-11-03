@@ -13,12 +13,12 @@ export class UsersController {
   @Post()
   // @UseGuards(AuthGuard('jwt'))
   async create(@Body() createUserDto) {
-    if (!createUserDto.username) return { success: false, res_desc: 'Please Input Username' }
-    else if (!createUserDto.password) return { success: false, res_desc: 'Please Input Password' }
-    else if (!createUserDto.role) return { success: false, res_desc: 'Please Input Role' }
+    if (!createUserDto.username) return { success: false, msg: 'Please Input Username' }
+    else if (!createUserDto.password) return { success: false, msg: 'Please Input Password' }
+    else if (!createUserDto.role) return { success: false, msg: 'Please Input Role' }
     const user = await this.usersService.create(createUserDto);
     return {
-      res_desc: 'Created User Successful',
+      msg: 'Created User Successful',
       user
     };
   }
@@ -28,7 +28,7 @@ export class UsersController {
   async findAll(@Query() query: string) {
     const users = await this.usersService.findAll(query);
     return {
-      res_desc: 'Get All Users',
+      msg: 'Get All Users',
       users
     };
   }
@@ -38,7 +38,7 @@ export class UsersController {
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(+id);
     return {
-      res_desc: 'Get User ID',
+      msg: 'Get User ID',
       user: {
         id: user.id,
         username: user.username,
@@ -52,7 +52,7 @@ export class UsersController {
   async update(@Param('id') id: string, @Body() updateUserDto) {
     await this.usersService.update(+id, updateUserDto);
     return {
-      res_desc: 'Updated User Successful'
+      msg: 'Updated User Successful'
     };
   }
 
@@ -61,7 +61,7 @@ export class UsersController {
   async remove(@Param('id') id: string) {
     await this.usersService.remove(+id);
     return {
-      res_desc: 'Deleted User Successful'
+      msg: 'Deleted User Successful'
     };
   }
 

@@ -9,7 +9,7 @@ export class StocksController {
   async create(@Body() createStockDto) {
     const stock = await this.stocksService.create(createStockDto);
     return {
-      res_desc: 'Created Stock Successful',
+      msg: 'Created Stock Successful',
       stock
     };
   }
@@ -18,7 +18,7 @@ export class StocksController {
   async findAll(@Query() query: string) {
     const stocks = await this.stocksService.findAll(query);
     return {
-      res_desc: 'Get All Stocks',
+      msg: 'Get All Stocks',
       stocks
     };
   }
@@ -27,7 +27,7 @@ export class StocksController {
   async findOne(@Param('id') id: string) {
     const stock = await this.stocksService.findOne(+id);
     return {
-      res_desc: 'Get Stock ID',
+      msg: 'Get Stock ID',
       stock
     };
   }
@@ -36,7 +36,7 @@ export class StocksController {
   async update(@Param('id') id: string, @Body() updateStockDto) {
     const stock = await this.stocksService.update(+id, updateStockDto);
     return {
-      res_desc: 'Updated Stock',
+      msg: 'Updated Stock',
       stock
     };
   }
@@ -45,7 +45,7 @@ export class StocksController {
   async remove(@Param('id') id: string) {
     await this.stocksService.remove(+id);
     return {
-      res_desc: 'Deleted Stock'
+      msg: 'Deleted Stock'
     };
   }
 }
