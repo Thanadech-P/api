@@ -18,7 +18,6 @@ export class UsersController {
     else if (!createUserDto.role) return { success: false, res_desc: 'Please Input Role' }
     const user = await this.usersService.create(createUserDto);
     return {
-      success: true,
       res_desc: 'Created User Successful',
       user
     };
@@ -29,8 +28,7 @@ export class UsersController {
   async findAll(@Query() query: string) {
     const users = await this.usersService.findAll(query);
     return {
-      success: true,
-      res_desc: '',
+      res_desc: 'Get All Users',
       users
     };
   }
@@ -40,8 +38,7 @@ export class UsersController {
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(+id);
     return {
-      success: true,
-      res_desc: '',
+      res_desc: 'Get User ID',
       user: {
         id: user.id,
         username: user.username,
@@ -55,8 +52,7 @@ export class UsersController {
   async update(@Param('id') id: string, @Body() updateUserDto) {
     await this.usersService.update(+id, updateUserDto);
     return {
-      success: true,
-      res_desc: 'Updated Successful'
+      res_desc: 'Updated User Successful'
     };
   }
 
@@ -65,8 +61,7 @@ export class UsersController {
   async remove(@Param('id') id: string) {
     await this.usersService.remove(+id);
     return {
-      success: true,
-      res_desc: 'Deleted Successful'
+      res_desc: 'Deleted User Successful'
     };
   }
 

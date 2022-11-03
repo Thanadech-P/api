@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
 import bcrypt = require('bcrypt');
 
@@ -9,7 +9,7 @@ export class UsersService {
 
   async create(createUserDto) {
     const findUser = await this.prisma.users.findFirst({ where: { username: createUserDto.username } })
-    if (findUser) return 'Duplicate User !!'
+    if (findUser) throw new BadRequestException('ผู้ใช้งานนี้มีอยู่ในระบบแล้ว')
     const user = await this.prisma.users.create({
       data: {
         username: createUserDto.username,
@@ -28,7 +28,7 @@ export class UsersService {
     return user
   }
 
-  findAll(query) {
+  async findAll(query) {
     const { limit, offset } = query
     const q = {
       where: {},
@@ -36,11 +36,13 @@ export class UsersService {
       skip: Number(offset) || 0
     }
 
-    return this.prisma.users.findMany(q)
+    const users = await this.prisma.users.findMany(q)
+    if (!users) throw new BadRequestException('ไม่พบผู้ใช้งานในระบบ')
+    return users
   }
 
-  findOne(id: number) {
-    return this.prisma.users.findFirst({
+  async findOne(id: number) {
+    const user = await this.prisma.users.findFirst({
       where: {
         id
       },
@@ -52,6 +54,8 @@ export class UsersService {
         }
       }
     })
+    if (!user) throw new BadRequestException('ไม่พบข้อมูลผู้ใช้งานดังกล่าว')
+    return user
   }
 
   async findOneUsername(username: string) {
@@ -64,9 +68,8 @@ export class UsersService {
       })
   }
 
-  async update(id: number, updateUserDto) {
-    await this.prisma.users.update({ where: { id }, data: updateUserDto })
-    return true
+  update(id: number, updateUserDto) {
+    return this.prisma.users.update({ where: { id }, data: updateUserDto })
   }
 
   async remove(id: number) {

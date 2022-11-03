@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
 
 @Injectable()
@@ -6,42 +6,44 @@ export class PurchaseService {
   constructor(private prisma: PrismaService) { }
 
   async create(createPurchaseDto, product) {
-    try {
-      const type = createPurchaseDto.type
-      const p = await this.prisma.stocks.findFirst({ where: { id: product.id } })
-      const amountStock = p.amount
-      const amountPuchase = product.product_amount
-      if (type === 'OUT' && amountStock < amountPuchase) throw new Error('คลังสินค้าไม่เพียงพอ')
-      await this.prisma.stocks.update({
-        where: {
-          id: product.id
-        },
-        data: {
-          amount: createPurchaseDto.type === 'IN' ? (amountStock + amountPuchase) : (amountStock - amountPuchase)
-        }
-      })
-      return await this.prisma.purchase.create({ data: createPurchaseDto })
-    } catch (err) {
-      throw err
-    }
+    const type = createPurchaseDto.type
+    const p = await this.prisma.stocks.findFirst({ where: { id: product.id } })
+    if (!p) throw new BadRequestException('ไม่พบสินค้า');
+    const amountStock = p.amount
+    const amountPuchase = product.product_amount
+    if (type === 'OUT' && amountStock < amountPuchase) throw new BadRequestException('คลังสินค้าไม่เพียง');
+    await this.prisma.stocks.update({
+      where: {
+        id: product.id
+      },
+      data: {
+        amount: createPurchaseDto.type === 'IN' ? (amountStock + amountPuchase) : (amountStock - amountPuchase)
+      }
+    })
+    return await this.prisma.purchase.create({ data: createPurchaseDto })
   }
 
-  findAll(query) {
+  async findAll(query) {
     const { limit, offset, date } = query
     const q = {
       take: Number(limit) || 10,
       skip: Number(offset) || 0
     }
-    return this.prisma.purchase.findMany({
+    const purchases = await this.prisma.purchase.findMany({
       orderBy: {
         created_at: 'desc'
       },
       ...q
     })
+    if (!purchases) throw new BadRequestException('ไม่พบข้อมูลการสั่งซื้อในระบบ');
+
+    return purchases
   }
 
-  findOne(id: number) {
-    return this.prisma.purchase.findUnique({ where: { id } })
+  async findOne(id: number) {
+    const purcahse = await this.prisma.purchase.findUnique({ where: { id } })
+    if(!purcahse) throw new BadRequestException('ไม่พบข้อมูลการสั่งซื้อดังกล่าว');
+    return purcahse
   }
 
   async summaryOfDay(query) {

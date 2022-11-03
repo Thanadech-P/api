@@ -9,8 +9,7 @@ export class PartnerController {
   async create(@Body() createPartnerDto) {
     const partner = await this.partnerService.create(createPartnerDto);
     return {
-      success: true,
-      res_desc: '',
+      res_desc: 'Create Partner Successfull',
       partner
     };
   }
@@ -19,8 +18,7 @@ export class PartnerController {
   async findAll() {
     const partner = await this.partnerService.findAll();
     return {
-      success: true,
-      res_desc: '',
+      res_desc: 'Get All Partner',
       partner
     };
   }
@@ -29,8 +27,7 @@ export class PartnerController {
   async findOne(@Param('id') id: string) {
     const partner = await this.partnerService.findOne(+id);
     return {
-      success: true,
-      res_desc: '',
+      res_desc: 'Get Partner ID',
       partner
     };
   }
@@ -39,8 +36,7 @@ export class PartnerController {
   async update(@Param('id') id: string, @Body() updatePartnerDto) {
     await this.partnerService.update(+id, updatePartnerDto);
     return {
-      success: true,
-      res_desc: ''
+      res_desc: 'Updated Partner'
     };
   }
 
@@ -48,8 +44,7 @@ export class PartnerController {
   async remove(@Param('id') id: string) {
     await this.partnerService.remove(+id);
     return {
-      success: true,
-      res_desc: ''
+      res_desc: 'Delete Partner'
     };
   }
 }

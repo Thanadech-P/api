@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class StocksService {
     return this.prisma.stocks.create({ data: createStockDto })
   }
 
-  findAll(query) {
+  async findAll(query) {
     const { limit, offset, date} = query
     const q = {
       where:{
@@ -18,11 +18,14 @@ export class StocksService {
       take: Number(limit) || 10,
       skip: Number(offset) || 0
     }
-    return this.prisma.stocks.findMany(q)
+    const stocks = await this.prisma.stocks.findMany(q)
+    if(!stocks) throw new BadRequestException('ไม่พบข้อมูลสินค้าในระบบ')
+    return stocks
   }
 
-  findOne(id: number) {
-    return this.prisma.stocks.findUnique({ where: { id }})
+  async findOne(id: number) {
+    const stock = await this.prisma.stocks.findUnique({ where: { id }})
+    if(!stock) throw new BadRequestException('ไม่พบข้อมูลสินค้าดังกล่าว')
   }
 
   update(id: number, updateStockDto) {
