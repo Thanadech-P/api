@@ -29,7 +29,7 @@ model purchase {
   partner_type           String?
   product_name           String?
   note                   String?
-  product_amount         Int?
+  product_amount         Float?
   product_price_per_unit String?
   product_net_amount     Int?
   weight_fee             Int?
@@ -52,8 +52,8 @@ model purchase {
 model stocks {
   id         Int      @id @default(autoincrement())
   name       String
-  amount     Int
-  price      Int
+  amount     Float
+  price      Float
   unit       String
   created_at DateTime @default(now())
   code       String?  @db.VarChar
