@@ -40,6 +40,30 @@ export class PurchaseService {
     return purchases
   }
 
+  async findListnameDelivery() {
+    const delivery = await this.prisma.purchase.findMany({
+      select: {
+        delivery_man: true
+      },
+      distinct: ['delivery_man'],
+    })
+    if (!delivery) throw new BadRequestException('ไม่มีรายชื่อผู้ส่งสินค้า');
+
+    return delivery
+  }
+
+  async findListnameRecipient() {
+    const recipient = await this.prisma.purchase.findMany({
+      select: {
+        recipient: true
+      },
+      distinct: ['recipient'],
+    })
+    if (!recipient) throw new BadRequestException('ไม่มีรายชื่อผู้รับสินค้า');
+
+    return recipient
+  }
+
   async findOne(id: number) {
     const purcahse = await this.prisma.purchase.findUnique({ where: { id } })
     if(!purcahse) throw new BadRequestException('ไม่พบข้อมูลการสั่งซื้อดังกล่าว');

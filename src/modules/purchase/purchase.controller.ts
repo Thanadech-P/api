@@ -71,6 +71,25 @@ export class PurchaseController {
     };
 
   }
+
+  @Get('/listname/delivery')
+  async findListnameDelivery() {
+    const listnames = await this.purchaseService.findListnameDelivery();
+    return {
+      msg: 'Get Listname Delivery',
+      listnames
+    };
+  }
+
+  @Get('/listname/recipient')
+  async findListnameRecipient() {
+    const listnames = await this.purchaseService.findListnameRecipient();
+    return {
+      msg: 'Get Listname Recipient',
+      listnames
+    };
+  }
+
   @Get('summary/day')
   async summaryOfDay(@Query() query: string) {
     const summary = await this.purchaseService.summaryOfDay(query);
