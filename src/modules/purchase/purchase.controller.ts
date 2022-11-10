@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query, Req } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query, Req, BadRequestException } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,6 +13,8 @@ export class PurchaseController {
   async create(@Req() req: any,
     @Body() createPurchaseDto) {
     const data: any = this.jwtService.decode(req.cookies['auth-cookie'].token)
+    if(!createPurchaseDto.type) throw new BadRequestException('ไม่พบ Request body "TYPE"')
+    if(!createPurchaseDto.product_id) throw new BadRequestException('ไม่พบ Request body "PRODUCT_ID"')
     const newPurchase = {
       user_id: data.id,
       branch_id: data.branch_id,

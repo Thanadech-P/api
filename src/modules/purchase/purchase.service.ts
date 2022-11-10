@@ -6,21 +6,25 @@ export class PurchaseService {
   constructor(private prisma: PrismaService) { }
 
   async create(createPurchaseDto, product) {
-    const type = createPurchaseDto.type
-    const p = await this.prisma.stocks.findFirst({ where: { id: product.id } })
-    if (!p) throw new BadRequestException('ไม่พบสินค้า');
-    const amountStock = p.amount
-    const amountPuchase = product.product_amount
-    if (type === 'OUT' && amountStock < amountPuchase) throw new BadRequestException('คลังสินค้าไม่เพียง');
-    await this.prisma.stocks.update({
-      where: {
-        id: product.id
-      },
-      data: {
-        amount: createPurchaseDto.type === 'IN' ? (amountStock + amountPuchase) : (amountStock - amountPuchase)
-      }
-    })
-    return await this.prisma.purchase.create({ data: createPurchaseDto })
+    try {
+      const type = createPurchaseDto.type
+      const p = await this.prisma.stocks.findFirst({ where: { id: product.id } })
+      if (!p) throw new BadRequestException('ไม่พบสินค้า');
+      const amountStock = p.amount
+      const amountPuchase = product.product_amount
+      if (type === 'OUT' && amountStock < amountPuchase) throw new BadRequestException('คลังสินค้าไม่เพียง');
+      await this.prisma.stocks.update({
+        where: {
+          id: product.id
+        },
+        data: {
+          amount: createPurchaseDto.type === 'IN' ? (amountStock + amountPuchase) : (amountStock - amountPuchase)
+        }
+      })
+      return await this.prisma.purchase.create({ data: createPurchaseDto })
+    } catch (err) {
+      throw(err)
+    }
   }
 
   async findAll(query) {
@@ -66,7 +70,7 @@ export class PurchaseService {
 
   async findOne(id: number) {
     const purcahse = await this.prisma.purchase.findUnique({ where: { id } })
-    if(!purcahse) throw new BadRequestException('ไม่พบข้อมูลการสั่งซื้อดังกล่าว');
+    if (!purcahse) throw new BadRequestException('ไม่พบข้อมูลการสั่งซื้อดังกล่าว');
     return purcahse
   }
 
