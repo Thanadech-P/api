@@ -2,50 +2,7 @@ import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query, Re
 import { PurchaseService } from './purchase.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
-import { Length, IsNotEmpty } from 'class-validator';
-
-export class createPurchaseDtoValidate {
-  @IsNotEmpty()
-  @Length(2, 3)
-  type: string;
-  @IsNotEmpty()
-  time_in: Date;
-  @IsNotEmpty()
-  time_out: Date;
-  @IsNotEmpty()
-  partner: string;
-  @IsNotEmpty()
-  product_id: number;
-  @IsNotEmpty()
-  product_name: string;
-  @IsNotEmpty()
-  product_amount: string;
-  @IsNotEmpty()
-  product_price_per_unit: string;
-  @IsNotEmpty()
-  product_net_amount: string;
-  @IsNotEmpty()
-  car_number: string;
-  @IsNotEmpty()
-  car_weight_in: string;
-  @IsNotEmpty()
-  car_weight_out: string;
-  @IsNotEmpty()
-  car_weight: string;
-  @IsNotEmpty()
-  weight_amount: string;
-  @IsNotEmpty()
-  subtract_weight: string;
-  @IsNotEmpty()
-  weigher: string;
-  @IsNotEmpty()
-  recipient: string;
-  @IsNotEmpty()
-  deliver_man: string;
-  @IsNotEmpty()
-  note: string;
-  service_date?: Date
-}
+import { createPurchaseDtoValidate } from './validation/createPuchase';
 
 
 @Controller('purchase')
@@ -83,7 +40,8 @@ export class PurchaseController {
       recipient: createPurchaseDto.recipient,
       delivery_man: createPurchaseDto.deliver_man,
       note: createPurchaseDto.note,
-      service_date: createPurchaseDto.service_date
+      service_date: createPurchaseDto.service_date,
+      field_no: createPurchaseDto.field_no
     }
     const product = {
       id: createPurchaseDto.product_id,
