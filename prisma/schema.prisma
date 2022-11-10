@@ -31,13 +31,13 @@ model purchase {
   note                   String?
   product_amount         Float?
   product_price_per_unit String?
-  product_net_amount     Int?
-  weight_fee             Int?
-  put_fee                Int?
-  subtract_bag           Int?
-  subtract_adulteration  Int?
-  subtract_moisture      Int?
-  net_weight             Int?
+  product_net_amount     Float?
+  weight_fee             Float?
+  put_fee                Float?
+  subtract_bag           Float?
+  subtract_adulteration  Float?
+  subtract_moisture      Float?
+  net_weight             Float?
   delivery_man           String?
   recipient              String?
   weigher                String?
