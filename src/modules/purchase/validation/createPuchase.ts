@@ -1,10 +1,10 @@
-import { Length, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty,IsEnum } from 'class-validator';
 
 export class createPurchaseDtoValidate {
   @IsNotEmpty()
   field_no: string;
   @IsNotEmpty()
-  @Length(2, 3)
+  @IsEnum(['IN','OUT'], { message: 'Type is IN or OUT'})
   type: string;
   @IsNotEmpty()
   time_in: Date;
