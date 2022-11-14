@@ -68,7 +68,7 @@ export class PurchaseController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const purchase = await this.purchaseService.findOne(+id);
+    const purchase = await this.purchaseService.findOne(id);
     return {
       msg: 'Get Purcase ID',
       purchase

@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
-
+import * as dayjs from 'dayjs'
 @Injectable()
 export class PurchaseService {
   constructor(private prisma: PrismaService) { }
@@ -25,12 +25,20 @@ export class PurchaseService {
       })
       return await this.prisma.purchase.create({ data: createPurchaseDto })
     } catch (err) {
-      throw(err)
+      throw (err)
     }
   }
 
   async findAll(query) {
-    const { limit, offset, date } = query
+    const {
+      limit,
+      offset,
+      field_no,
+      parthner_type,
+      service_date,
+      product_name,
+      type
+    } = query
     const q = {
       take: Number(limit) || 10,
       skip: Number(offset) || 0
@@ -39,7 +47,23 @@ export class PurchaseService {
       orderBy: {
         created_at: 'desc'
       },
-      ...q
+      where: {
+        field_no: {
+          contains:
+            field_no
+        },
+        partner_type: {
+          contains: parthner_type
+        },
+        service_date: {
+          gte: service_date ? dayjs(service_date).format() : undefined,
+          lte: service_date ? dayjs(service_date).add(1, 'day').format() : undefined,
+        },
+        product_name: {
+          contains: product_name
+        },
+        type: type
+      }
     })
     if (!purchases) throw new BadRequestException('ไม่พบข้อมูลการสั่งซื้อในระบบ');
 
@@ -70,8 +94,12 @@ export class PurchaseService {
     return recipient
   }
 
-  async findOne(id: number) {
-    const purcahse = await this.prisma.purchase.findUnique({ where: { id } })
+  async findOne(id: string) {
+    const purcahse = await this.prisma.purchase.findFirst({
+      where: {
+        field_no: id
+      }
+    })
     if (!purcahse) throw new BadRequestException('ไม่พบข้อมูลการสั่งซื้อดังกล่าว');
     return purcahse
   }

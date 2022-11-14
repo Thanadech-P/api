@@ -83,10 +83,7 @@ export class AuthService {
       id: user.id,
       username: user.username,
       branch_id: user?.map_user_branch[0]?.branchs?.id || null,
-
     }
-
-
     return currentUser;
   }
 
