@@ -22,6 +22,8 @@ export class PurchaseController {
       date_out: createPurchaseDto.time_out,
       type: createPurchaseDto.type,
       partner_type: createPurchaseDto.partner,
+      total: createPurchaseDto.total,
+      amount: createPurchaseDto.amount,
       //product
       product_name: createPurchaseDto.product_name,
       product_amount: parseFloat(createPurchaseDto.product_amount),
