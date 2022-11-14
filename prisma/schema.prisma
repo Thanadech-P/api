@@ -16,11 +16,9 @@ model purchase {
   car_number             String?
   car_weight             Float?
   created_at             DateTime     @default(now())
-  amount                 Float?
   branch_id              Int
   mobile                 String?
   name                   String?
-  total                  Float?
   weight                 Float?
   weight_in              Float?
   weight_out             Float?
