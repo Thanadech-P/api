@@ -76,7 +76,7 @@ export class PurchaseService {
     return purcahse
   }
 
-  async summaryOfDay(query) {
+  async summaryOfDay(query, type) {
     const startOfDay = new Date(query.date);
     startOfDay.setUTCHours(0, 0, 0, 0);
 
@@ -85,14 +85,15 @@ export class PurchaseService {
 
     const q: any = {
       where: {
+        type,
         created_at: {
           gt: startOfDay.toISOString(),
           lt: endOfDay.toISOString()
         }
       },
       _sum: {
-        total: true,
-        amount: true,
+        product_net_amount: true,
+        product_amount: true,
       },
     }
     const sum = await this.prisma.purchase.aggregate(q)
