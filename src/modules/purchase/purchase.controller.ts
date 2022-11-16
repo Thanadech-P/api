@@ -3,6 +3,7 @@ import { PurchaseService } from './purchase.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { createPurchaseDtoValidate } from './validation/createPuchase';
+import { summaryPurchaseDtoValidate } from './validation/summaryPuchase';
 
 
 @Controller('purchase')
@@ -95,16 +96,24 @@ export class PurchaseController {
   }
 
   @Get('summary/day')
-  async summaryOfDay(@Query() query: string) {
-    const summary = await this.purchaseService.summaryOfDay(query);
-    // return {
-    //   success: true,
-    //   msg: '',
-    //   summary: {
-    //     total: summary._sum.total || 0,
-    //     amount: summary._sum.amount || 0
-    //   }
-    // };
+  async summaryOfDay(@Query() query: summaryPurchaseDtoValidate) {
+    const summaryIN = await this.purchaseService.summaryOfDay(query, 'IN');
+    const summaryOUT = await this.purchaseService.summaryOfDay(query, 'OUT');
+    return {
+      msg: 'Summary of Day',
+      summary: {
+        // total: summaryIN._sum.product_net_amount || 0,
+        // amount: summaryIN._sum.product_amount || 0
+        type_in: {
+          total: summaryIN._sum.product_net_amount || 0,
+          amount: summaryIN._sum.product_amount || 0
+        },
+        type_out: {
+          total: summaryOUT._sum.product_net_amount || 0,
+          amount: summaryOUT._sum.product_amount || 0
+        },
+      }
+    };
   }
 
   // @Patch(':id')

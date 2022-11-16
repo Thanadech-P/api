@@ -57,6 +57,32 @@ model stocks {
   code       String?  @db.VarChar
 }
 
+model stockspare {
+  id             Int              @id @default(autoincrement())
+  user_id        Int
+  name           String
+  amount         Int
+  price_in       Float
+  price_out      Float
+  stock          Int
+  profit         Float
+  created_at     DateTime         @default(now())
+  updated_at     DateTime?
+  users          users            @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  stockspare_log stockspare_log[]
+}
+
+model stockspare_log {
+  id            Int            @id @default(autoincrement())
+  type          StockspareType
+  user_id       Int
+  stockspare_id Int
+  amount        Int
+  created_at    DateTime       @default(now())
+  users         users          @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  stockspare    stockspare     @relation(fields: [stockspare_id], references: [id], onUpdate: Restrict)
+}
+
 model branchs {
   id              Int               @id @default(autoincrement())
   name            String
@@ -76,6 +102,8 @@ model users {
   map_user_branch   map_user_branch[]
   map_user_role     map_user_role[]
   purchase          purchase[]
+  stockspare        stockspare[]
+  stockspare_log    stockspare_log[]
 }
 
 model roles {
@@ -112,4 +140,9 @@ model partner {
 enum PurchaseType {
   IN
   OUT
+}
+
+enum StockspareType {
+  IMPORT
+  EXPORT
 }
