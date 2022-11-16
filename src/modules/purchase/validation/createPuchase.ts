@@ -40,7 +40,6 @@ export class createPurchaseDtoValidate {
   recipient: string;
   @IsNotEmpty()
   deliver_man: string;
-  @IsNotEmpty()
-  note: string;
+  note?: string;
   service_date?: Date
 }
