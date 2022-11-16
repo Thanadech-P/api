@@ -104,7 +104,7 @@ export class PurchaseService {
     return purcahse
   }
 
-  async summaryOfDay(query, type) {
+  async summaryPuchase(date, type) {
     const q: any = {
       where: {
         type,
@@ -114,12 +114,12 @@ export class PurchaseService {
         product_amount: true,
       },
     }
-    if (query.date) {
+    if (date) {
       console.log('--- query by date ---')
-      const startOfDay = new Date(query.date);
+      const startOfDay = new Date(date);
       startOfDay.setUTCHours(0, 0, 0, 0);
 
-      const endOfDay = new Date(query.date);
+      const endOfDay = new Date(date);
       endOfDay.setUTCHours(23, 59, 59, 999);
 
       q.where.created_at = {

@@ -96,11 +96,14 @@ export class PurchaseController {
   }
 
   @Get('summary/all')
-  async summaryOfDay(@Query() query) {
-    const summaryIN = await this.purchaseService.summaryOfDay(query, 'IN');
-    const summaryOUT = await this.purchaseService.summaryOfDay(query, 'OUT');
+  async summaryPuchase() {
+    const date = new Date().toISOString();
+    const summaryPerDayIN = await this.purchaseService.summaryPuchase(date, 'IN');
+    const summaryPerDayOUT = await this.purchaseService.summaryPuchase(date, 'OUT');
+    const summaryIN = await this.purchaseService.summaryPuchase(null, 'IN');
+    const summaryOUT = await this.purchaseService.summaryPuchase(null, 'OUT');
     return {
-      msg: query.date ? 'Summary of Day' : 'Summary All',
+      msg: 'Summary All',
       summary: {
         type_in: {
           total: summaryIN._sum.product_net_amount || 0,
@@ -109,6 +112,16 @@ export class PurchaseController {
         type_out: {
           total: summaryOUT._sum.product_net_amount || 0,
           amount: summaryOUT._sum.product_amount || 0
+        },
+      },
+      summary_per_day: {
+        type_in: {
+          total: summaryPerDayIN._sum.product_net_amount || 0,
+          amount: summaryPerDayIN._sum.product_amount || 0
+        },
+        type_out: {
+          total: summaryPerDayOUT._sum.product_net_amount || 0,
+          amount: summaryPerDayOUT._sum.product_amount || 0
         },
       }
     };
