@@ -75,12 +75,12 @@ model stockspare {
 model stockspare_log {
   id            Int            @id @default(autoincrement())
   type          StockspareType
-  user_id       Int
-  stockspare_id Int
   amount        Int
   created_at    DateTime       @default(now())
-  users         users          @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  stockspare_id Int
+  user_id       Int
   stockspare    stockspare     @relation(fields: [stockspare_id], references: [id], onUpdate: Restrict)
+  users         users          @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }
 
 model branchs {
