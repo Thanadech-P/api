@@ -105,27 +105,32 @@ export class PurchaseService {
   }
 
   async summaryOfDay(query, type) {
-    const startOfDay = new Date(query.date);
-    startOfDay.setUTCHours(0, 0, 0, 0);
-
-    const endOfDay = new Date(query.date);
-    endOfDay.setUTCHours(23, 59, 59, 999);
-
     const q: any = {
       where: {
         type,
-        created_at: {
-          gt: startOfDay.toISOString(),
-          lt: endOfDay.toISOString()
-        }
       },
       _sum: {
         product_net_amount: true,
         product_amount: true,
       },
     }
-    const sum = await this.prisma.purchase.aggregate(q)
-    return sum;
+    if (query.date) {
+      console.log('--- query by date ---')
+      const startOfDay = new Date(query.date);
+      startOfDay.setUTCHours(0, 0, 0, 0);
+
+      const endOfDay = new Date(query.date);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+
+      q.where.created_at = {
+        gt: startOfDay.toISOString(),
+        lt: endOfDay.toISOString()
+      }
+      return await this.prisma.purchase.aggregate(q)
+    } else {
+      console.log('--- query all ---')
+      return await this.prisma.purchase.aggregate(q)
+    }
   }
 
   update(id: number, updatePurchaseDto) {

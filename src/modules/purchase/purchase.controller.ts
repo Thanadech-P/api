@@ -95,15 +95,13 @@ export class PurchaseController {
     };
   }
 
-  @Get('summary/day')
-  async summaryOfDay(@Query() query: summaryPurchaseDtoValidate) {
+  @Get('summary/all')
+  async summaryOfDay(@Query() query) {
     const summaryIN = await this.purchaseService.summaryOfDay(query, 'IN');
     const summaryOUT = await this.purchaseService.summaryOfDay(query, 'OUT');
     return {
-      msg: 'Summary of Day',
+      msg: query.date ? 'Summary of Day' : 'Summary All',
       summary: {
-        // total: summaryIN._sum.product_net_amount || 0,
-        // amount: summaryIN._sum.product_amount || 0
         type_in: {
           total: summaryIN._sum.product_net_amount || 0,
           amount: summaryIN._sum.product_amount || 0
