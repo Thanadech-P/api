@@ -11,14 +11,14 @@ export class StocksService {
 
   async findAll(query) {
     const { limit, offset, date} = query
-    const q = {
-      where:{
-        created_at: date
-      },
-      take: Number(limit) || 10,
-      skip: Number(offset) || 0
-    }
-    const stocks = await this.prisma.stocks.findMany(q)
+    // const q = {
+    //   where:{
+    //     created_at: date
+    //   },
+    //   take: Number(limit) || 10,
+    //   skip: Number(offset) || 0
+    // }
+    const stocks = await this.prisma.stocks.findMany()
     if(!stocks) throw new BadRequestException('ไม่พบข้อมูลสินค้าในระบบ')
     return stocks
   }
