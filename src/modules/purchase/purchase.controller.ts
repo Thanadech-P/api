@@ -5,7 +5,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { createPurchaseDtoValidate } from './validation/createPuchase';
 import { summaryPurchaseDtoValidate } from './validation/summaryPuchase';
 
-
 @Controller('purchase')
 export class PurchaseController {
   constructor(private readonly purchaseService: PurchaseService,
@@ -26,7 +25,7 @@ export class PurchaseController {
       //product
       product_name: createPurchaseDto.product_name,
       product_amount: parseFloat(createPurchaseDto.product_amount),
-      product_price_per_unit: createPurchaseDto.product_price_per_unit,
+      product_price_per_unit: parseFloat(createPurchaseDto.product_price_per_unit),
       product_net_amount: parseFloat(createPurchaseDto.product_net_amount),
       //car
       car_number: createPurchaseDto.car_number,
@@ -132,8 +131,8 @@ export class PurchaseController {
   //   return this.purchaseService.update(+id, updatePurchaseDto);
   // }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.purchaseService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.purchaseService.remove(+id);
+  }
 }
