@@ -68,8 +68,30 @@ export class UsersService {
       })
   }
 
-  update(id: number, updateUserDto) {
-    return this.prisma.users.update({ where: { id }, data: updateUserDto })
+  async update(id: number, updateUserDto) {
+    const role = updateUserDto.role
+    const updateUser: any = {}
+    if (updateUserDto.password) {
+      updateUser.password = bcrypt.hashSync(updateUserDto.password, bcrypt.genSaltSync())
+      await this.prisma.users.update({ where: { id }, data: updateUserDto })
+    }
+    if (role && role.length > 0) {
+      console.log('--- delete role ---')
+      await this.prisma.map_user_role.deleteMany({
+        where: {
+          user_id: id
+        }
+      })
+      await role.map(async (r) => {
+        await this.prisma.map_user_role.create({
+          data: {
+            user_id: id,
+            role_id: r
+          }
+        })
+      })
+    }
+    return true
   }
 
   async remove(id: number) {

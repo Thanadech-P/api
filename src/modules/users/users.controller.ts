@@ -3,7 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } f
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
-
+import { createUserDtoValidate } from './validation/createUser';
 
 @Controller('users')
 export class UsersController {
@@ -12,10 +12,7 @@ export class UsersController {
 
   @Post()
   // @UseGuards(AuthGuard('jwt'))
-  async create(@Body() createUserDto) {
-    if (!createUserDto.username) return { success: false, msg: 'Please Input Username' }
-    else if (!createUserDto.password) return { success: false, msg: 'Please Input Password' }
-    else if (!createUserDto.role) return { success: false, msg: 'Please Input Role' }
+  async create(@Body() createUserDto: createUserDtoValidate) {
     const user = await this.usersService.create(createUserDto);
     return {
       msg: 'Created User Successful',

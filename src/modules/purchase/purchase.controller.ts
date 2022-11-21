@@ -3,7 +3,6 @@ import { PurchaseService } from './purchase.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { createPurchaseDtoValidate } from './validation/createPuchase';
-import { summaryPurchaseDtoValidate } from './validation/summaryPuchase';
 
 @Controller('purchase')
 export class PurchaseController {
