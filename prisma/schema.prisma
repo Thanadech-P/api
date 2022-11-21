@@ -28,7 +28,7 @@ model purchase {
   product_name           String?
   note                   String?
   product_amount         Float?
-  product_price_per_unit String?
+  product_price_per_unit Float?
   product_net_amount     Float?
   weight_fee             Float?
   put_fee                Float?
@@ -55,6 +55,7 @@ model stocks {
   unit       String
   created_at DateTime @default(now())
   code       String?  @db.VarChar
+  updated_at DateTime @default(now())
 }
 
 model stockspare {

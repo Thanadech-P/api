@@ -14,6 +14,9 @@ export class PurchaseService {
       if (field_no) throw new BadRequestException(`หมายเลขนี้ ${createPurchaseDto.field_no} มีอยู่ในระบบแล้ว`);
       const amountStock = p.amount
       const amountPuchase = product.product_amount
+      console.log(`amountStock`, amountStock)
+      console.log(`amountPurchase`, amountPuchase)
+      console.log(amountStock + amountPuchase)
       if (type === 'OUT' && amountStock < amountPuchase) throw new BadRequestException('คลังสินค้าไม่เพียง');
       await this.prisma.stocks.update({
         where: {
