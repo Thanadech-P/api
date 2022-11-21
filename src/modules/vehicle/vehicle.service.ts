@@ -6,7 +6,7 @@ export class VehicleService {
   constructor(private prisma: PrismaService) { }
 
   async create(createVehicleDto) {
-    const vehicle = await this.prisma.vehicle.create(createVehicleDto)
+    const vehicle = await this.prisma.vehicle.create({ data: createVehicleDto })
     return vehicle;
   }
 
@@ -21,6 +21,7 @@ export class VehicleService {
   }
 
   async update(id: number, updateVehicleDto) {
+    updateVehicleDto.updated_at =  new Date()
     const update = await this.prisma.vehicle.update({ where: { id }, data: updateVehicleDto})
     return update;
   }

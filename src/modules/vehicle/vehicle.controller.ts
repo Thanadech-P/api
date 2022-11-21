@@ -7,8 +7,8 @@ export class VehicleController {
   constructor(private readonly vehicleService: VehicleService) {}
 
   @Post()
-  create(@Body() createVehicleDto: createVehicleDtoValidate) {
-    const vehicle = this.vehicleService.create(createVehicleDto);
+  async create(@Body() createVehicleDto: createVehicleDtoValidate) {
+    const vehicle = await this.vehicleService.create(createVehicleDto);
     return {
       msg: 'Created Vehicle Successful',
       vehicle
@@ -16,8 +16,8 @@ export class VehicleController {
   }
 
   @Get()
-  findAll() {
-    const vehicles = this.vehicleService.findAll();
+  async findAll() {
+    const vehicles = await this.vehicleService.findAll();
     return {
       msg: 'Get All Vehicle',
       vehicles
@@ -25,8 +25,8 @@ export class VehicleController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const vehicle = this.vehicleService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const vehicle = await this.vehicleService.findOne(+id);
     return {
       msg: 'Get Vehicle ID',
       vehicle
@@ -34,12 +34,12 @@ export class VehicleController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVehicleDto) {
-    return this.vehicleService.update(+id, updateVehicleDto);
+  async update(@Param('id') id: string, @Body() updateVehicleDto) {
+    return await this.vehicleService.update(+id, updateVehicleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vehicleService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.vehicleService.remove(+id);
   }
 }

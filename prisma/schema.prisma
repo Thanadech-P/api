@@ -28,7 +28,6 @@ model purchase {
   product_name           String?
   note                   String?
   product_amount         Float?
-  product_price_per_unit String?
   product_net_amount     Float?
   weight_fee             Float?
   put_fee                Float?
@@ -43,6 +42,7 @@ model purchase {
   updated_at             DateTime?    @default(now())
   field_no               String?
   service_date           DateTime?
+  product_price_per_unit Float?
   branchs                branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
   users                  users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }
