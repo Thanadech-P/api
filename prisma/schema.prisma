@@ -43,19 +43,20 @@ model purchase {
   updated_at             DateTime?    @default(now())
   field_no               String?
   service_date           DateTime?
+  product_price_per_unit Float?
   branchs                branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
   users                  users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
 }
 
 model stocks {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   name       String
   amount     Float
   price      Float
   unit       String
-  created_at DateTime @default(now())
-  code       String?  @db.VarChar
-  updated_at DateTime @default(now())
+  created_at DateTime  @default(now())
+  code       String?   @db.VarChar
+  updated_at DateTime?
 }
 
 model stockspare {
@@ -100,6 +101,7 @@ model users {
   refresh_token     String?
   refresh_token_exp DateTime?         @db.Date
   created_at        DateTime          @default(now())
+  updated_at        DateTime?
   map_user_branch   map_user_branch[]
   map_user_role     map_user_role[]
   purchase          purchase[]
@@ -136,6 +138,15 @@ model partner {
   id         Int      @id @default(autoincrement())
   name       String   @db.VarChar
   created_at DateTime @default(now())
+}
+
+model vehicle {
+  id             Int       @id @default(autoincrement())
+  vehicle_number String    @db.VarChar
+  vehicle_type   String
+  vehicle_brand  String
+  created_at     DateTime  @default(now())
+  updated_at     DateTime?
 }
 
 enum PurchaseType {
