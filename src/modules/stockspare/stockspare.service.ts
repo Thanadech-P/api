@@ -14,7 +14,29 @@ export class StockspareService {
   }
 
   async findOne(id: number) {
-    return await this.prisma.stockspare.findUnique({ where: { id } });
+    const stockspare = await this.prisma.stockspare.findUnique({
+      where: {
+        id
+      },
+      include: {
+        stockspare_log: true
+      }
+    });
+    return stockspare
+  }
+
+  async summaryStockspare(id: number, type: string) {
+    const q: any = {
+      where: {
+        type,
+        stockspare_id: id
+      },
+      _sum: {
+        amount: true
+      },
+    }
+    const sum = await this.prisma.stockspare_log.aggregate(q);
+    return sum._sum.amount
   }
 
   async update(id: number, updateStockspareDto, userId) {

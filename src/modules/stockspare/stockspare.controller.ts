@@ -43,9 +43,14 @@ export class StockspareController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const stockspare = await this.stockspareService.findOne(+id);
+    const sum_import = await this.stockspareService.summaryStockspare(+id, 'IMPORT');
+    const sum_export = await this.stockspareService.summaryStockspare(+id, 'EXPORT');
+    const sum = sum_import - sum_export
     return{
       msg: 'Get Stockspare ID',
-      stockspare
+      stockspare,
+      status: sum < 0 ? 'EXPORT' : 'IMPORT',
+      sum
     }
   }
 
