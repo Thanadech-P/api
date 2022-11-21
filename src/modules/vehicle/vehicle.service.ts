@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
 
 @Injectable()
@@ -12,11 +12,13 @@ export class VehicleService {
 
   async findAll() {
     const vehicles = await this.prisma.vehicle.findMany()
+    if (!vehicles) throw new BadRequestException('ไม่มีรถในระบบ')
     return vehicles;
   }
 
   async findOne(id: number) {
     const vehicle = await this.prisma.vehicle.findUnique({ where: { id }})
+    if (!vehicle) throw new BadRequestException('ไม่มีพบข้อมูลรถดังกล่าว')
     return vehicle;
   }
 

@@ -48,14 +48,24 @@ model purchase {
 }
 
 model stocks {
+  id          Int       @id @default(autoincrement())
+  category_id Int
+  name        String
+  amount      Float
+  price       Float
+  unit        String
+  created_at  DateTime  @default(now())
+  code        String?   @db.VarChar
+  updated_at  DateTime?
+  category    category  @relation(fields: [category_id], references: [id], onUpdate: Restrict)
+}
+
+model category {
   id         Int       @id @default(autoincrement())
   name       String
-  amount     Float
-  price      Float
-  unit       String
   created_at DateTime  @default(now())
-  code       String?   @db.VarChar
   updated_at DateTime?
+  stocks     stocks[]
 }
 
 model stockspare {

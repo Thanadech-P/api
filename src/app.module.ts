@@ -9,8 +9,9 @@ import { PartnerModule } from './modules/partner/partner.module';
 import { StockspareModule } from './modules/stockspare/stockspare.module';
 import { PrismaService } from 'prisma.service';
 import { VehicleModule } from './modules/vehicle/vehicle.module';
+import { CategoryModule } from './modules/category/category.module';
 @Module({
-  imports: [AuthModule, UsersModule, PurchaseModule, StocksModule, PartnerModule, StockspareModule, VehicleModule],
+  imports: [AuthModule, UsersModule, PurchaseModule, StocksModule, PartnerModule, StockspareModule, VehicleModule, CategoryModule],
   controllers: [AppController],
   providers: [AppService,PrismaService],
 })
