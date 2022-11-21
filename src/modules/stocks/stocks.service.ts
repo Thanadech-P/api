@@ -10,22 +10,26 @@ export class StocksService {
   }
 
   async findAll(query) {
-    const { limit, offset, date} = query
-    // const q = {
-    //   where:{
-    //     created_at: date
-    //   },
-    //   take: Number(limit) || 10,
-    //   skip: Number(offset) || 0
-    // }
-    const stocks = await this.prisma.stocks.findMany()
-    if(!stocks) throw new BadRequestException('ไม่พบข้อมูลสินค้าในระบบ')
+    const {
+      product_name,
+    } = query
+    const stocks = await this.prisma.stocks.findMany({
+      orderBy: {
+        updated_at: 'desc'
+      },
+      where: {
+        name: {
+          contains: product_name
+        }
+      }
+    })
+    if (!stocks) throw new BadRequestException('ไม่พบข้อมูลสินค้าในระบบ')
     return stocks
   }
 
   async findOne(id: number) {
-    const stock = await this.prisma.stocks.findUnique({ where: { id }})
-    if(!stock) throw new BadRequestException('ไม่พบข้อมูลสินค้าดังกล่าว')
+    const stock = await this.prisma.stocks.findUnique({ where: { id } })
+    if (!stock) throw new BadRequestException('ไม่พบข้อมูลสินค้าดังกล่าว')
     return stock
   }
 
@@ -34,6 +38,6 @@ export class StocksService {
   }
 
   remove(id: number) {
-    return this.prisma.stocks.delete({ where: { id }})
+    return this.prisma.stocks.delete({ where: { id } })
   }
 }
