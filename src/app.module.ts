@@ -8,8 +8,9 @@ import { StocksModule } from './modules/stocks/stocks.module';
 import { PartnerModule } from './modules/partner/partner.module';
 import { StockspareModule } from './modules/stockspare/stockspare.module';
 import { PrismaService } from 'prisma.service';
+import { VehicleModule } from './modules/vehicle/vehicle.module';
 @Module({
-  imports: [AuthModule, UsersModule, PurchaseModule, StocksModule, PartnerModule, StockspareModule],
+  imports: [AuthModule, UsersModule, PurchaseModule, StocksModule, PartnerModule, StockspareModule, VehicleModule],
   controllers: [AppController],
   providers: [AppService,PrismaService],
 })
