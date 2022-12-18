@@ -23,7 +23,6 @@ export class StockspareController {
       stock: parseFloat(createStockspareDto.stock),
       profit: parseFloat(createStockspareDto.profit)
     }
-    console.log(newStockspare)
     const stockspare = await this.stockspareService.create(newStockspare);
     return {
       msg: '',

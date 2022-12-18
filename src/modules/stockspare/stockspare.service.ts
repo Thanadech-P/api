@@ -52,7 +52,6 @@ export class StockspareService {
     if (!stockspare) throw new BadRequestException('ไม่พบอะไหล่ดังกล่าว')
     if (type) {
       if (type === 'IMPORT') {
-        console.log('--- update Stocksapre IMPORT and Log ---')
         const amountOld = stockspare.amount
         const amountImport = updateStockspareDto.import ? parseFloat(updateStockspareDto.import) : null
         if (!amountImport) throw new BadRequestException('กรุณาส่งข้อมูลที่ต้องการ import')
@@ -74,7 +73,6 @@ export class StockspareService {
         await this.prisma.stockspare_log.create({ data: createLog })
 
       } else if (type === 'EXPORT') {
-        console.log('--- update Stocksapre Export and Log ---')
         const amountOld = stockspare.amount
         const amountExport = updateStockspareDto.export ? parseFloat(updateStockspareDto.export) : null
         if (!amountExport) throw new BadRequestException('กรุณาส่งข้อมูลที่ต้องการ export')
@@ -100,7 +98,7 @@ export class StockspareService {
       }
     }
     else {
-      console.log('--- update Stocksapre ---')
+      ('--- update Stocksapre ---')
       return this.prisma.stockspare.update({ where: { id }, data: updateStockspare});
     }
   }

@@ -75,4 +75,12 @@ export class UsersController {
     }
     return { user };
   }
+
+  @Get('/get/roles')
+  @UseGuards(AuthGuard('jwt'))
+  async getRoles() {
+    const data = await this.usersService.getRole()
+    return data;
+  }
+
 }

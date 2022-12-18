@@ -14,9 +14,7 @@ export class PurchaseService {
       if (field_no) throw new BadRequestException(`หมายเลขนี้ ${createPurchaseDto.field_no} มีอยู่ในระบบแล้ว`);
       const amountStock = p.amount
       const amountPuchase = product.product_amount
-      console.log(`amountStock`, amountStock)
-      console.log(`amountPurchase`, amountPuchase)
-      console.log(amountStock + amountPuchase)
+
       if (type === 'OUT' && amountStock < amountPuchase) throw new BadRequestException('คลังสินค้าไม่เพียง');
       await this.prisma.stocks.update({
         where: {
@@ -118,7 +116,6 @@ export class PurchaseService {
       },
     }
     if (date) {
-      console.log('--- query by date ---')
       const startOfDay = new Date(date);
       startOfDay.setUTCHours(0, 0, 0, 0);
 
@@ -131,7 +128,6 @@ export class PurchaseService {
       }
       return await this.prisma.purchase.aggregate(q)
     } else {
-      console.log('--- query all ---')
       return await this.prisma.purchase.aggregate(q)
     }
   }

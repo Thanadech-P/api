@@ -116,12 +116,15 @@ model users {
   purchase          purchase[]
   stockspare        stockspare[]
   stockspare_log    stockspare_log[]
+  first_name        String
+  last_name         String
 }
 
 model roles {
   id            Int             @id @default(autoincrement())
   name          String
   code          String
+  name_th       String
   map_user_role map_user_role[]
 }
 
@@ -130,8 +133,8 @@ model map_user_role {
   user_id    Int
   role_id    Int
   created_at DateTime @default(now())
-  roles      roles    @relation(fields: [role_id], references: [id], onUpdate: Restrict)
-  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  roles      roles    @relation(fields: [role_id], references: [id], onUpdate: Restrict, onDelete: Cascade)
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict, onDelete: Cascade)
 }
 
 model map_user_branch {
