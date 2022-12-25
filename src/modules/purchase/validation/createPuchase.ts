@@ -7,9 +7,9 @@ export class createPurchaseDtoValidate {
   @IsEnum(['IN','OUT'], { message: 'Type is IN or OUT'})
   type: string;
   @IsNotEmpty()
-  time_in: Date;
+  time_in: string;
   @IsNotEmpty()
-  time_out: Date;
+  time_out: string;
   @IsNotEmpty()
   partner: string;
   @IsNotEmpty()

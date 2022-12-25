@@ -17,8 +17,8 @@ export class PurchaseController {
     const newPurchase = {
       user_id: data.id,
       branch_id: data.branch_id,
-      date_in: createPurchaseDto.time_in,
-      date_out: createPurchaseDto.time_out,
+      time_in: createPurchaseDto.time_in,
+      time_out: createPurchaseDto.time_out,
       type: createPurchaseDto.type,
       partner_type: createPurchaseDto.partner,
       //product
