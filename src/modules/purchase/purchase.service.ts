@@ -11,11 +11,11 @@ export class PurchaseService {
       const p = await this.prisma.stocks.findFirst({ where: { id: product.id } })
       if (!p) throw new BadRequestException('ไม่พบสินค้า');
       const field_no = await this.prisma.purchase.findFirst({ where: { field_no: createPurchaseDto.field_no } })
-      if (field_no) throw new BadRequestException(`หมายเลขนี้ ${createPurchaseDto.field_no} มีอยู่ในระบบแล้ว`);
+      if (field_no) throw new BadRequestException(`หมายเลข ${createPurchaseDto.field_no} มีอยู่ในระบบแล้ว`);
       const amountStock = p.amount
       const amountPuchase = product.product_amount
 
-      if (type === 'OUT' && amountStock < amountPuchase) throw new BadRequestException('คลังสินค้าไม่เพียง');
+      if (type === 'OUT' && amountStock < amountPuchase) throw new BadRequestException('คลังสินค้าไม่เพียงพอ');
       await this.prisma.stocks.update({
         where: {
           id: product.id

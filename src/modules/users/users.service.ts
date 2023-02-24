@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
 import bcrypt = require('bcrypt');
 @Injectable()
@@ -117,5 +117,15 @@ export class UsersService {
   async getRole() {
     const result = this.prisma.roles.findMany()
     return result;
+  }
+
+  async getBranchs() {
+    try {
+      const result = this.prisma.branchs.findMany()
+      return result;
+
+    } catch (error) {
+      throw new InternalServerErrorException(error)
+    }
   }
 }

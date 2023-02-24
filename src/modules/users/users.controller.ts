@@ -83,4 +83,12 @@ export class UsersController {
     return data;
   }
 
+  @Get('/get/branchs')
+  @UseGuards(AuthGuard('jwt'))
+  async getBranchs() {
+    const data = await this.usersService.getBranchs()
+    return data;
+  }
+
+
 }
