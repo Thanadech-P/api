@@ -67,7 +67,9 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   async getUserProfile(@Req() req: any) {
     const data: any = this.jwtService.decode(req.cookies['auth-cookie'].token)
+    console.log('data', data)
     const result = await this.usersService.findOne(data?.id);
+    console.log('result', result)
     const user = {
       username: result.username,
       role: result.map_user_role.map((item) => item.roles.code),
