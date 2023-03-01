@@ -23,7 +23,7 @@ export class AuthController {
       token,
       refreshToken,
     };
-    response.cookie('auth-cookie', authData);
+    response.cookie('auth-cookie', authData, { sameSite: 'none' });
 
     return { msg: 'success' };
   }
@@ -34,14 +34,14 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     response.clearCookie('auth-cookie')
- 
+
     return { msg: 'User Logout' };
   }
 
   @Get('refresh-token')
   @UseGuards(AuthGuard('refresh'))
   async regenerateTokens(
-    @Req() req:any,
+    @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = await this.authService.getJwtToken(req.user);
@@ -53,7 +53,7 @@ export class AuthController {
       refreshToken,
     };
 
-    res.cookie('auth-cookie', secretData);
+    res.cookie('auth-cookie', secretData, { sameSite: 'none' });
     return { msg: 'success' };
   }
 }
