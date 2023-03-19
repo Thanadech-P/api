@@ -1,5 +1,9 @@
 {
     "version": 2,
+    "env": {
+        "DATABASE_URL": "postgresql://root:6tshv4QbuicQOF2grHcno34d6xHAcCNwyhUFzQrw@54.169.78.100:54000/postgres?schema=public",
+        "TOKEN_KEY": "SECRET_KEY"
+    },
     "build": [
         {
             "src": "src/main.ts",
