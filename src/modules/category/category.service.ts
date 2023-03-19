@@ -21,9 +21,6 @@ export class CategoryService {
       where: {
         id
       },
-      include: {
-        stocks: true
-      }
     })
     if(!category) throw new BadRequestException('ไม่พบหมวดหมู่ดังกล่าว')
     return category;

@@ -23,7 +23,7 @@ export class AuthController {
       token,
       refreshToken,
     };
-    response.cookie('auth-cookie', authData, { sameSite: 'none' });
+    response.cookie('auth-cookie', authData, { sameSite: 'none', secure: true })
 
     return { msg: 'success' };
   }
@@ -53,7 +53,7 @@ export class AuthController {
       refreshToken,
     };
 
-    res.cookie('auth-cookie', secretData, { sameSite: 'none' });
+    res.cookie('auth-cookie', secretData, { sameSite: 'none',secure:true });
     return { msg: 'success' };
   }
 }

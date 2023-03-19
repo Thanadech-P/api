@@ -5,8 +5,8 @@ import { PrismaService } from 'prisma.service';
 export class StocksService {
   constructor(private prisma: PrismaService) { }
 
-  create(createStockDto) {
-    return this.prisma.stocks.create({ data: createStockDto })
+  async create(createStockDto) {
+    return await this.prisma.stocks.create({ data: createStockDto })
   }
 
   async findAll(query) {
@@ -17,11 +17,11 @@ export class StocksService {
       orderBy: {
         updated_at: 'desc'
       },
-      where: {
-        name: {
-          contains: product_name
-        }
-      }
+      // where: {
+      //   name: {
+      //     contains: product_name
+      //   }
+      // }
     })
     if (!stocks) throw new BadRequestException('ไม่พบข้อมูลสินค้าในระบบ')
     return stocks

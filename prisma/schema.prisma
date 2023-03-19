@@ -48,24 +48,21 @@ model purchase {
 }
 
 model stocks {
-  id          Int       @id @default(autoincrement())
-  category_id Int
-  name        String
-  amount      Float
-  price       Float
-  unit        String
-  created_at  DateTime  @default(now())
-  code        String?   @db.VarChar
-  updated_at  DateTime?
-  category    category  @relation(fields: [category_id], references: [id], onUpdate: Restrict)
+  id         Int       @id @default(autoincrement())
+  name       String
+  amount     Float
+  price      Float
+  unit       String
+  created_at DateTime  @default(now())
+  code       String?   @db.VarChar
+  updated_at DateTime? @updatedAt
 }
 
 model category {
   id         Int       @id @default(autoincrement())
   name       String
   created_at DateTime  @default(now())
-  updated_at DateTime?
-  stocks     stocks[]
+  updated_at DateTime? @updatedAt
 }
 
 model stockspare {
@@ -78,7 +75,7 @@ model stockspare {
   stock          Int
   profit         Float
   created_at     DateTime         @default(now())
-  updated_at     DateTime?
+  updated_at     DateTime?        @updatedAt
   users          users            @relation(fields: [user_id], references: [id], onUpdate: Restrict)
   stockspare_log stockspare_log[]
 }
@@ -110,7 +107,7 @@ model users {
   refresh_token     String?
   refresh_token_exp DateTime?         @db.Date
   created_at        DateTime          @default(now())
-  updated_at        DateTime?
+  updated_at        DateTime?         @updatedAt
   map_user_branch   map_user_branch[]
   map_user_role     map_user_role[]
   purchase          purchase[]
@@ -158,7 +155,7 @@ model vehicle {
   vehicle_type   String
   vehicle_brand  String
   created_at     DateTime  @default(now())
-  updated_at     DateTime?
+  updated_at     DateTime? @updatedAt
 }
 
 enum PurchaseType {

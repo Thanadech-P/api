@@ -7,6 +7,9 @@ export class StocksController {
 
   @Post()
   async create(@Body() createStockDto) {
+    createStockDto.amount = parseFloat(createStockDto.amount)
+    createStockDto.price = parseFloat(createStockDto.price)
+
     const stock = await this.stocksService.create(createStockDto);
     return {
       msg: 'Created Stock Successful',
