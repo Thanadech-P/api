@@ -67,7 +67,6 @@ model category {
 
 model stockspare {
   id             Int              @id @default(autoincrement())
-  user_id        Int
   name           String
   amount         Int
   price_in       Float
@@ -76,19 +75,20 @@ model stockspare {
   profit         Float
   created_at     DateTime         @default(now())
   updated_at     DateTime?        @updatedAt
-  users          users            @relation(fields: [user_id], references: [id], onUpdate: Restrict)
   stockspare_log stockspare_log[]
+  user_id        Int
+  users          users            @relation(fields: [user_id], references: [id])
 }
 
 model stockspare_log {
   id            Int            @id @default(autoincrement())
+  stockspare_id Int
   type          StockspareType
   amount        Int
   created_at    DateTime       @default(now())
-  stockspare_id Int
   user_id       Int
-  stockspare    stockspare     @relation(fields: [stockspare_id], references: [id], onUpdate: Restrict)
-  users         users          @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  stockspare    stockspare     @relation(fields: [stockspare_id], references: [id])
+  users         users          @relation(fields: [user_id], references: [id])
 }
 
 model branchs {
@@ -111,8 +111,8 @@ model users {
   map_user_branch   map_user_branch[]
   map_user_role     map_user_role[]
   purchase          purchase[]
-  stockspare        stockspare[]
   stockspare_log    stockspare_log[]
+  stockspare        stockspare[]
   first_name        String
   last_name         String
 }

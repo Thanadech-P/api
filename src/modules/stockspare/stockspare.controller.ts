@@ -7,12 +7,12 @@ import { createStockspareDtoValidate } from './validation/createStockspare'
 @Controller('stockspare')
 export class StockspareController {
   constructor(private readonly stockspareService: StockspareService,
-    private readonly jwtService: JwtService) { }  
+    private readonly jwtService: JwtService) { }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async create(@Req() req: any,
-  @Body() createStockspareDto: createStockspareDtoValidate) {
+    @Body() createStockspareDto: createStockspareDtoValidate) {
     const data: any = this.jwtService.decode(req.cookies['auth-cookie'].token)
     const newStockspare = {
       user_id: data.id,
@@ -33,7 +33,7 @@ export class StockspareController {
   @Get()
   async findAll() {
     const stockspare = await this.stockspareService.findAll();
-    return{
+    return {
       msg: 'Get All Stockspare',
       stockspare
     }
@@ -45,7 +45,7 @@ export class StockspareController {
     const sum_import = await this.stockspareService.summaryStockspare(+id, 'IMPORT');
     const sum_export = await this.stockspareService.summaryStockspare(+id, 'EXPORT');
     const sum = sum_import - sum_export
-    return{
+    return {
       msg: 'Get Stockspare ID',
       stockspare,
       status: sum < 0 ? 'EXPORT' : 'IMPORT',
@@ -55,7 +55,7 @@ export class StockspareController {
 
   @Patch(':id')
   @UseGuards(AuthGuard('jwt'))
-  async update(@Param('id') id: string,@Req() req: any, @Body() updateStockspareDto) {
+  async update(@Param('id') id: string, @Req() req: any, @Body() updateStockspareDto) {
     const data: any = this.jwtService.decode(req.cookies['auth-cookie'].token)
     const userId = data.id
     await this.stockspareService.update(+id, updateStockspareDto, userId);

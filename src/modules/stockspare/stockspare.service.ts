@@ -99,11 +99,15 @@ export class StockspareService {
     }
     else {
       ('--- update Stocksapre ---')
-      return this.prisma.stockspare.update({ where: { id }, data: updateStockspare});
+      return this.prisma.stockspare.update({ where: { id }, data: updateStockspare });
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} stockspare`;
+  async remove(id: number) {
+    return await this.prisma.stockspare.delete({
+      where: {
+        id: id
+      }
+    })
   }
 }

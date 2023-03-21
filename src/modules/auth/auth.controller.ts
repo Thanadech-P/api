@@ -38,6 +38,12 @@ export class AuthController {
     return { msg: 'User Logout' };
   }
 
+  @UseGuards(AuthGuard('local'))
+  @Post('logout')
+  async healcheck() {
+    return { msg: 'helth_check' };
+  }
+
   @Get('refresh-token')
   @UseGuards(AuthGuard('refresh'))
   async regenerateTokens(
