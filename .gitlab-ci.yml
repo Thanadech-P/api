@@ -12,7 +12,7 @@ variables:
   RUNNER_TAG: devops-aws-nutto
   GITLAB_USER: $GITLAB_USER
   GITLAB_TOKEN: $GITLAB_TOKEN
-  GITPATH: https://${GITLAB_USER}:${GITLAB_TOKEN}@gitlab.com/ta_gut_tong/tgt_service.git
+  GITPATH: https://${GITLAB_USER}:${GITLAB_TOKEN}@gitlab.com/woranun.dev/tgt_service.git
   DOCKER_HOST: unix:///var/run/docker.sock
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
