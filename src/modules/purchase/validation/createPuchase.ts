@@ -1,10 +1,10 @@
-import { IsNotEmpty,IsEnum } from 'class-validator';
+import { IsNotEmpty, IsEnum } from 'class-validator';
 
 export class createPurchaseDtoValidate {
   @IsNotEmpty()
   field_no: string;
   @IsNotEmpty()
-  @IsEnum(['IN','OUT'], { message: 'Type is IN or OUT'})
+  @IsEnum(['IN', 'OUT'], { message: 'Type is IN or OUT' })
   type: string;
   @IsNotEmpty()
   time_in: string;
@@ -36,10 +36,8 @@ export class createPurchaseDtoValidate {
   subtract_weight: string;
   @IsNotEmpty()
   weigher: string;
-  @IsNotEmpty()
-  recipient: string;
-  @IsNotEmpty()
-  deliver_man: string;
+  recipient?: string;
+  deliver_man?: string;
   note?: string;
   service_date?: Date
 }

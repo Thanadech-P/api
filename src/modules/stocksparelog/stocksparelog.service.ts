@@ -12,7 +12,6 @@ export class StocksparelogService {
     data.amount = parseInt(data.amount)
     const new_part_amount = data.type === 'EXPORT' ? parseInt(data.old_amount) - parseInt(data.amount) : parseInt(data.old_amount) + parseInt(data.amount)
     delete data['old_amount']
-    // console.log('createStocksparelogDto', createStocksparelogDto)
     await this.prisma.$transaction([
       this.prisma.stockspare.update({
         data: {

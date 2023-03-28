@@ -8,6 +8,7 @@ export class PurchaseService {
   async create(createPurchaseDto, product) {
     try {
       const type = createPurchaseDto.type
+      createPurchaseDto.car_weight = type === 'OUT' ? createPurchaseDto.car_weight_out - createPurchaseDto.car_weight_in : createPurchaseDto.car_weight_in - createPurchaseDto.car_weight_out
       const p = await this.prisma.stocks.findFirst({ where: { id: product.id } })
       if (!p) throw new BadRequestException('ไม่พบสินค้า');
       const field_no = await this.prisma.purchase.findFirst({ where: { field_no: createPurchaseDto.field_no } })
@@ -106,9 +107,37 @@ export class PurchaseService {
   }
 
   async summaryPuchase(date, type) {
-    const q: any = {
+    const q: any = {  //ไม้
       where: {
         type,
+        product_name: {
+          contains: 'ไม้',
+          mode: 'insensitive',
+        }
+      },
+      _sum: {
+        product_net_amount: true,
+        product_amount: true,
+      },
+    }
+    const q2: any = {  //ข้าว
+      where: {
+        type,
+        OR: [
+          {
+            product_name: {
+              contains: 'ข้าว',
+              mode: 'insensitive',
+            },
+          },
+          {
+            product_name: {
+              contains: 'เหนียว',
+              mode: 'insensitive',
+            },
+          },
+        ],
+
       },
       _sum: {
         product_net_amount: true,
@@ -126,9 +155,13 @@ export class PurchaseService {
         gt: startOfDay.toISOString(),
         lt: endOfDay.toISOString()
       }
-      return await this.prisma.purchase.aggregate(q)
+      const wood = await this.prisma.purchase.aggregate(q)
+      const rice = await this.prisma.purchase.aggregate(q2)
+      return { wood, rice }
     } else {
-      return await this.prisma.purchase.aggregate(q)
+      const wood = await this.prisma.purchase.aggregate(q)
+      const rice = await this.prisma.purchase.aggregate(q2)
+      return { wood, rice }
     }
   }
 

@@ -104,22 +104,30 @@ export class PurchaseController {
       msg: 'Summary All',
       summary: {
         type_in: {
-          total: summaryIN._sum.product_net_amount || 0,
-          amount: summaryIN._sum.product_amount || 0
+          total_wood: summaryIN.wood._sum.product_net_amount || 0,
+          amount_wood: summaryIN.wood._sum.product_amount || 0,
+          total_rice: summaryIN.rice._sum.product_net_amount || 0,
+          amount_rice: summaryIN.rice._sum.product_amount || 0
         },
         type_out: {
-          total: summaryOUT._sum.product_net_amount || 0,
-          amount: summaryOUT._sum.product_amount || 0
+          total_wood: summaryOUT.wood._sum.product_net_amount || 0,
+          amount_wood: summaryOUT.wood._sum.product_amount || 0,
+          total_rice: summaryOUT.rice._sum.product_net_amount || 0,
+          amount_rice: summaryOUT.rice._sum.product_amount || 0
         },
       },
       summary_per_day: {
         type_in: {
-          total: summaryPerDayIN._sum.product_net_amount || 0,
-          amount: summaryPerDayIN._sum.product_amount || 0
+          total_wood: summaryPerDayIN.wood._sum.product_net_amount || 0,
+          amount_wood: summaryPerDayIN.wood._sum.product_amount || 0,
+          total_rice: summaryPerDayIN.rice._sum.product_net_amount || 0,
+          amount_rice: summaryPerDayIN.rice._sum.product_amount || 0
         },
         type_out: {
-          total: summaryPerDayOUT._sum.product_net_amount || 0,
-          amount: summaryPerDayOUT._sum.product_amount || 0
+          total_wood: summaryPerDayOUT.wood._sum.product_net_amount || 0,
+          amount_wood: summaryPerDayOUT.rice._sum.product_amount || 0,
+          total_rice: summaryPerDayOUT.wood._sum.product_net_amount || 0,
+          amount_rice: summaryPerDayOUT.rice._sum.product_amount || 0
         },
       }
     };
