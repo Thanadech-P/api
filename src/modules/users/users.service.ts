@@ -92,7 +92,7 @@ export class UsersService {
     if (updateUserDto.password) updateUser.password = bcrypt.hashSync(updateUserDto.password, bcrypt.genSaltSync())
     if (updateUserDto.first_name) updateUser.first_name = updateUserDto.first_name
     if (updateUserDto.last_name) updateUser.last_name = updateUserDto.last_name
-    
+
     await this.prisma.users.update({ where: { id }, data: updateUserDto })
 
     if (role && role.length > 0) {

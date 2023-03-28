@@ -10,7 +10,11 @@ export class StockspareService {
   }
 
   async findAll() {
-    return await this.prisma.stockspare.findMany();
+    return await this.prisma.stockspare.findMany({
+      orderBy: {
+        updated_at: 'desc'
+      }
+    });
   }
 
   async findOne(id: number) {

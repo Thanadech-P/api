@@ -10,8 +10,9 @@ import { StockspareModule } from './modules/stockspare/stockspare.module';
 import { PrismaService } from 'prisma.service';
 import { VehicleModule } from './modules/vehicle/vehicle.module';
 import { CategoryModule } from './modules/category/category.module';
+import { StocksparelogModule } from './modules/stocksparelog/stocksparelog.module';
 @Module({
-  imports: [AuthModule, UsersModule, PurchaseModule, StocksModule, PartnerModule, StockspareModule, VehicleModule, CategoryModule],
+  imports: [AuthModule, UsersModule, PurchaseModule, StocksModule, PartnerModule, StockspareModule, VehicleModule, CategoryModule,StocksparelogModule],
   controllers: [AppController],
   providers: [AppService,PrismaService],
 })
