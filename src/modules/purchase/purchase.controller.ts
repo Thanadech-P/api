@@ -22,6 +22,7 @@ export class PurchaseController {
       type: createPurchaseDto.type,
       partner_type: createPurchaseDto.partner,
       //product
+      product_id: createPurchaseDto.product_id,
       product_name: createPurchaseDto.product_name,
       product_amount: parseFloat(createPurchaseDto.product_amount),
       product_price_per_unit: parseFloat(createPurchaseDto.product_price_per_unit),
