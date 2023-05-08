@@ -46,6 +46,7 @@ model purchase {
   product_price_per_unit Float?
   branchs                branchs      @relation(fields: [branch_id], references: [id], onUpdate: Restrict)
   users                  users        @relation(fields: [user_id], references: [id], onUpdate: Restrict)
+  stocks                  stocks        @relation(fields: [product_id], references: [id], onUpdate: Restrict)
 }
 
 model stocks {
@@ -57,6 +58,7 @@ model stocks {
   created_at DateTime  @default(now())
   code       String?   @db.VarChar
   updated_at DateTime? @updatedAt
+  purchase purchase[]
 }
 
 model category {
